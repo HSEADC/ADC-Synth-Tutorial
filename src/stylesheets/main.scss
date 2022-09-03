@@ -1,17 +1,7 @@
-.png {
-  background-image: url('images/test.png');
-  width: 100px;
-  height: 100px;
-}
+body {
+  display: flex;
 
-.svg {
-  background-image: url('images/test.svg');
-  width: 100px;
-  height: 100px;
-}
-
-.background {
-  background-color: var(--green);
-  width: 100px;
-  height: 100px;
+  div {
+    margin: auto;
+  }
 }
