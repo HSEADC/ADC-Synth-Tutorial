@@ -1,0 +1,5 @@
+.DS_Store
+node_modules
+dev_build/*.html
+dev_build/*.js
+dev_build/*.css
