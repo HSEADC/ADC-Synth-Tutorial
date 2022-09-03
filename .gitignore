@@ -1,5 +1,12 @@
 .DS_Store
-node_modules
-dev_build/*.html
-dev_build/*.js
-dev_build/*.css
+yarn-error.log
+/node_modules
+/dev_build/*.html
+/dev_build/*.css
+/dev_build/*.js
+/dev_build/*.png
+/dev_build/*.jpg
+/dev_build/*.jpeg
+/dev_build/*.gif
+/dev_build/*.svg
+/dev_build/*/*.*

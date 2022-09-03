@@ -1,10 +1,28 @@
 {
-  "name": "ADC-Synth-Tutorial",
-  "version": "0.1.0",
-  "author": "ZakharDay <zakhar.day@gmail.com>",
+  "name": "ADC-Generative-Art-Boilerplate-Static",
+  "private": true,
+  "scripts": {
+    "start": "webpack serve --open --config webpack.dev.js",
+    "watch": "webpack --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js"
+  },
   "devDependencies": {
-    "html-webpack-plugin": "^5.5.0",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0"
+    "@babel/core": "^7.17.5",
+    "@babel/plugin-proposal-class-properties": "^7.16.7",
+    "@babel/preset-env": "^7.16.11",
+    "@babel/preset-react": "^7.16.7",
+    "css-loader": "^5.2.4",
+    "css-minimizer-webpack-plugin": "^2.0.0",
+    "extract-loader": "^5.1.0",
+    "file-loader": "^6.2.0",
+    "html-loader": "^2.1.2",
+    "html-webpack-plugin": "^5.3.1",
+    "mini-css-extract-plugin": "^1.6.0",
+    "sass": "^1.32.12",
+    "sass-loader": "^11.0.1",
+    "webpack": "^5.33.2",
+    "webpack-cli": "^4.6.0",
+    "webpack-dev-server": "^3.11.2",
+    "webpack-merge": "^5.7.3"
   }
 }
