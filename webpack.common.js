@@ -38,7 +38,7 @@ module.exports = {
         }
       },
       {
-        test: /\.(ttf|otf)$/i,
+        test: /\.(ttf|otf|woff|woff2)$/i,
         loader: 'file-loader',
         options: {
           name: 'fonts/[name].[ext]'
@@ -56,6 +56,13 @@ module.exports = {
       scriptLoading: 'blocking',
       template: './src/index.html',
       filename: './index.html',
+      chunks: ['index']
+    }),
+    new HtmlWebpackPlugin({
+      hash: true,
+      scriptLoading: 'blocking',
+      template: './src/lessons/lesson-1.html',
+      filename: './lessons/lesson-1.html',
       chunks: ['index']
     })
   ],

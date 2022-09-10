@@ -1,0 +1,195 @@
+body.lesson {
+  padding-top: 54px;
+  color: var(--white);
+  background: var(--medium-grey);
+
+  menu.menubar {
+    position: fixed;
+    top: 0;
+    z-index: 99;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 54px;
+    padding: 0 20px;
+    background: var(--black);
+
+    .burger {
+      width: 24px;
+      height: 24px;
+      padding: 3px 0;
+      cursor: pointer;
+
+      div {
+        width: 24px;
+        height: 4px;
+        margin-bottom: 3px;
+        background: var(--white-grey);
+
+        &:first-child {
+          width: 18px;
+        }
+
+        &:last-child {
+          width: 12px;
+        }
+      }
+    }
+
+    .title {
+      font-family: 'PT Root UI';
+      font-style: normal;
+      font-weight: 500;
+      font-size: 18px;
+      line-height: 24px;
+      color: var(--white-grey);
+    }
+
+    .adcLogo {
+      width: 58px;
+      height: 22px;
+      background-image: url('images/ADC-Full-Logo-Grey.svg');
+    }
+  }
+
+  menu.sidebar {
+    position: fixed;
+    top: 54px;
+    left: 0;
+    width: 220px;
+    height: calc(100vh - 54px);
+    padding: 20px;
+    color: var(--white-grey);
+    background: var(--black);
+
+    ol {
+      li {
+        margin-bottom: 14px;
+        font-family: 'PT Root UI';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 20px;
+
+        &:hover {
+          font-weight: 700;
+          color: var(--acid-green);
+          cursor: pointer;
+
+          a {
+            color: var(--acid-green);
+          }
+        }
+
+        a {
+          color: var(--white-grey);
+          text-decoration: none;
+        }
+      }
+    }
+  }
+
+  header {
+    display: flex;
+    justify-content: space-between;
+    padding: 32px 0;
+
+    .titleContainer {
+      width: 240px;
+    }
+
+    .descriptionContainer {
+      width: 320px;
+    }
+
+    .label {
+      font-family: 'PT Root UI';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 18px;
+      color: var(--grey);
+    }
+
+    .title {
+      margin-top: 4px;
+      font-family: 'PT Root UI';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 27px;
+      line-height: 38px;
+      color: var(--white-grey);
+    }
+
+    .description {
+      margin-top: 18px;
+      font-family: 'PT Root UI';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 14px;
+      line-height: 20px;
+    }
+  }
+
+  // prettier-ignore
+  header, h1, h2, h3, p {
+    width: 600px;
+    margin: auto;
+  }
+
+  // prettier-ignore
+  h1, h2, h3, p {
+    font-family: 'PT Root UI';
+    font-style: normal;
+    font-weight: 700;
+  }
+
+  h1 {
+    margin-top: 40px;
+    font-size: 27px;
+    line-height: 38px;
+  }
+
+  h2 {
+    margin-top: 30px;
+    font-size: 24px;
+    line-height: 36px;
+  }
+
+  h3 {
+    margin-top: 22px;
+    font-size: 20px;
+    line-height: 24px;
+  }
+
+  p {
+    margin-top: 10px;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 28px;
+  }
+
+  .interactiveModuleContainer {
+    .interactiveModule {
+      position: relative;
+      width: 600px;
+      height: 300px;
+      margin: 40px auto;
+      background: var(--acid-green);
+
+      &.wide {
+        width: 1185px;
+      }
+
+      .dot {
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        bottom: 30px;
+        right: 30px;
+        background: white;
+      }
+    }
+  }
+}
