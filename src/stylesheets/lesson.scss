@@ -176,19 +176,10 @@ body.lesson {
       width: 600px;
       height: 300px;
       margin: 40px auto;
-      background: var(--acid-green);
+      // background: var(--acid-green);
 
       &.wide {
         width: 1185px;
-      }
-
-      .dot {
-        position: absolute;
-        width: 30px;
-        height: 30px;
-        bottom: 30px;
-        right: 30px;
-        background: white;
       }
     }
   }

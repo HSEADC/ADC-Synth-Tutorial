@@ -1,0 +1,16 @@
+#interactiveModule_3 {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .mainSequencerContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 1185px;
+
+    .AutoFilterEffect {
+      display: none;
+    }
+  }
+}

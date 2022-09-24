@@ -4,3 +4,67 @@
 @import 'stylesheets/basics.scss';
 @import 'stylesheets/index.scss';
 @import 'stylesheets/lesson.scss';
+
+// Folders
+@import 'stylesheets/containers/CodeModule.scss';
+@import 'stylesheets/containers/Effects.scss';
+@import 'stylesheets/containers/Mixer.scss';
+@import 'stylesheets/containers/Modules.scss';
+@import 'stylesheets/containers/SequencerContainer.scss';
+@import 'stylesheets/containers/SynthContainer.scss';
+@import 'stylesheets/containers/TremoloEffect.scss';
+
+@import 'stylesheets/controls/Button.scss';
+@import 'stylesheets/controls/ButtonSet.scss';
+@import 'stylesheets/controls/IconButton.scss';
+@import 'stylesheets/controls/Knob.scss';
+@import 'stylesheets/controls/Select.scss';
+@import 'stylesheets/controls/SequencerRow.scss';
+@import 'stylesheets/controls/Slider.scss';
+@import 'stylesheets/controls/ToggleButton.scss';
+
+@import 'stylesheets/effects/AutoFilterEffect.scss';
+@import 'stylesheets/effects/AutoPannerEffect.scss';
+@import 'stylesheets/effects/AutoWahEffect.scss';
+@import 'stylesheets/effects/BitCrusherEffect.scss';
+@import 'stylesheets/effects/ChebushevEffect.scss';
+@import 'stylesheets/effects/ChorusEffect.scss';
+@import 'stylesheets/effects/DistorionEffect.scss';
+@import 'stylesheets/effects/FeedbackDelayEffect.scss';
+@import 'stylesheets/effects/FreeverbEffect.scss';
+@import 'stylesheets/effects/FrequencyShifterEffect.scss';
+@import 'stylesheets/effects/MidSideEffect.scss';
+@import 'stylesheets/effects/PhaserEffect.scss';
+@import 'stylesheets/effects/PingPongDelayEffect.scss';
+@import 'stylesheets/effects/PitchShiftEffect.scss';
+@import 'stylesheets/effects/ReverbEffect.scss';
+@import 'stylesheets/effects/StereoWidenerEffect.scss';
+@import 'stylesheets/effects/TremoloEffect.scss';
+@import 'stylesheets/effects/VibratoEffect.scss';
+
+@import 'stylesheets/interactive_modules/Modules.scss';
+@import 'stylesheets/interactive_modules/module_1.scss';
+@import 'stylesheets/interactive_modules/module_2.scss';
+@import 'stylesheets/interactive_modules/module_3.scss';
+@import 'stylesheets/interactive_modules/module_4.scss';
+@import 'stylesheets/interactive_modules/module_5.scss';
+@import 'stylesheets/interactive_modules/module_6.scss';
+@import 'stylesheets/interactive_modules/module_7.scss';
+@import 'stylesheets/interactive_modules/module_8.scss';
+@import 'stylesheets/interactive_modules/module_9.scss';
+@import 'stylesheets/interactive_modules/module_10.scss';
+@import 'stylesheets/interactive_modules/module_11.scss';
+@import 'stylesheets/interactive_modules/module_12.scss';
+@import 'stylesheets/interactive_modules/module_13.scss';
+@import 'stylesheets/interactive_modules/module_14.scss';
+@import 'stylesheets/interactive_modules/module_15.scss';
+@import 'stylesheets/interactive_modules/module_16.scss';
+@import 'stylesheets/interactive_modules/module_17.scss';
+@import 'stylesheets/interactive_modules/module_18.scss';
+@import 'stylesheets/interactive_modules/module_19.scss';
+@import 'stylesheets/interactive_modules/module_20.scss';
+@import 'stylesheets/interactive_modules/module_22.scss';
+@import 'stylesheets/interactive_modules/module_23.scss';
+
+@import 'stylesheets/views/SynthRoom.scss';
+@import 'stylesheets/views/WelcomeScreen.scss';

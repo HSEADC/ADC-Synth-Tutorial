@@ -1,0 +1,83 @@
+.MixerContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+
+  .MixerGuitarContainer,
+  .MixerSynthContainer,
+  .DrumsContainer {
+    width: 840px;
+    height: 50px;
+
+    display: flex;
+  }
+
+  .DrumsContainer {
+    margin-bottom: 40px;
+  }
+
+  .MixerGuitarContainer,
+  .MixerSynthContainer {
+    margin-bottom: 50px;
+  }
+
+  span {
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 24px;
+  }
+
+  .PlayAllContainer {
+    margin-bottom: 20px;
+    display: flex;
+    margin-top: 40px;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    .text {
+      margin-left: 20px;
+      color: #e1e1e1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+
+  .LeftMixerPart {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-left: 10px;
+    width: 240px;
+    color: var(--white);
+    background-color: var(--black);
+
+    &::after {
+      color: var(--black);
+      content: '0';
+    }
+  }
+
+  .RightMixerPart {
+    height: 50px;
+  }
+
+  .Slider {
+    .sliderInput {
+      width: 600px;
+      height: 50px;
+      padding-left: 20px;
+      padding-right: 20px;
+    }
+
+    span {
+      display: none;
+    }
+    h3 {
+      display: none;
+    }
+  }
+}

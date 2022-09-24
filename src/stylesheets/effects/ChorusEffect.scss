@@ -1,0 +1,94 @@
+.ChorusEffect {
+  .firstModuleSettingsContainer {
+    display: flex;
+    flex-direction: row;
+
+    .sliderLargeContainer {
+      border-bottom-width: 0.5px;
+      border-bottom-style: solid;
+      border-color: #999999;
+
+      border-right-width: 0.5px;
+      border-right-style: solid;
+      border-color: #999999;
+    }
+
+    .sliderLargeContainer:last-of-type {
+      border-top-width: 0.5px;
+      border-top-style: solid;
+      border-color: #999999;
+    }
+  }
+
+  .secondModuleSettingsContainer {
+    display: flex;
+    flex-direction: row;
+
+    .sliderLargeContainer {
+      border-top-width: 0.5px;
+      border-top-style: solid;
+      border-color: #999999;
+
+      border-left-width: 0.5px;
+      border-left-style: solid;
+      border-color: #999999;
+    }
+
+    .sliderLargeContainer:first-of-type {
+      border-bottom-width: 0.5px;
+      border-bottom-style: solid;
+      border-color: #999999;
+    }
+  }
+
+  .sliderLargeContainerBlock {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sliderLargeContainer {
+    background-color: #e1e1e1;
+
+    height: 94px;
+    width: 440px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .knobContainer {
+    width: 160px;
+    height: 188px;
+
+    background-color: #e1e1e1;
+
+    border-bottom-width: 0.5px;
+    border-bottom-style: solid;
+    border-color: #999999;
+
+    border-left-width: 0.5px;
+    border-left-style: solid;
+    border-color: #999999;
+
+    justify-content: center;
+    align-items: center;
+    display: flex;
+  }
+
+  .buttonSetContainer {
+    background-color: #e1e1e1;
+    width: 160px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+
+    border-right-width: 0.5px;
+    border-right-style: solid;
+    border-color: #999999;
+
+    border-top-width: 0.5px;
+    border-top-style: solid;
+    border-color: #999999;
+  }
+}

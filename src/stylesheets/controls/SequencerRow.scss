@@ -1,0 +1,24 @@
+.SequencerRow {
+  display: flex;
+
+  .SequencerToggleButton {
+    width: 15%;
+    height: 40px;
+    line-height: 40px;
+    font-size: 0;
+    border: 0.5px solid black;
+    background-color: #e1e1e1;
+  }
+
+  .SequencerToggleButton {
+    &.grey {
+      background-color: #d1d1d1;
+    }
+  }
+}
+
+.SequencerModule {
+  .ToneSynth {
+    display: none;
+  }
+}

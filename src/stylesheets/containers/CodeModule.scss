@@ -1,0 +1,16 @@
+.CodeModule {
+  h1 {
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--editor-grey);
+    margin-bottom: 20px;
+    margin-top: 40px;
+    padding-left: 24px;
+  }
+
+  pre {
+    min-width: 600px;
+  }
+
+  // width: 600px;
+}

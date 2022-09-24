@@ -1,0 +1,53 @@
+#interactiveModule_11 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .SequencerContainer {
+    width: 100%;
+  }
+
+  .SequencerModule {
+    width: 100%;
+    margin-left: 300px;
+  }
+
+  .moduleHeaderButton {
+    width: 1185px;
+  }
+
+  .AutoFilterEffect {
+    .moduleHeaderText {
+      width: 600px;
+    }
+  }
+
+  .mainSequencerContainer {
+    overflow-x: scroll;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  .Sequencer {
+    width: 1185px;
+  }
+
+  .AutoFilter {
+    display: flex;
+    margin-top: -50px;
+  }
+
+  .Row {
+    display: flex;
+    width: fit-content;
+  }
+
+  .InstrumentContainer_1 {
+    margin-top: 60px;
+  }
+}

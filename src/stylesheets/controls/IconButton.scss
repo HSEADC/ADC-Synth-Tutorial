@@ -1,0 +1,74 @@
+.IconButtonContainer {
+  width: 42px;
+  display: flex;
+  justify-content: space-between;
+
+  .PlusIcon {
+    width: 20px;
+    height: 20px;
+
+    background-image: url('images/PlusIconDefault.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    &:hover {
+      background-image: url('images/PlusIconHover.svg');
+      cursor: pointer;
+    }
+  }
+
+  .DragIcon {
+    width: 19px;
+    height: 18px;
+
+    margin-top: 1px;
+
+    background-image: url('images/DragIconDefault.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    &:hover {
+      background-image: url('images/DragIconHover.svg');
+      cursor: pointer;
+    }
+  }
+
+  .DeleteIcon {
+    width: 17px;
+    height: 20px;
+
+    background-image: url('images/TrashCanDefault.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    &:hover {
+      background-image: url('images/TrashCanHover.svg');
+      cursor: pointer;
+    }
+  }
+  .DownMediumArrowIcon {
+    width: 17px;
+    height: 20px;
+    background-image: url('images/DownMediumArrowDefault.svg');
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    &:hover {
+      background-image: url('images/DownMediumArrowHover.svg');
+      cursor: pointer;
+    }
+  }
+  .UpMediumArrowIcon {
+    width: 17px;
+    height: 20px;
+    background-image: url('images/UpMediumArrowDefault.svg');
+
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    &:hover {
+      background-image: url('images/UpMediumArrowHover.svg');
+      cursor: pointer;
+    }
+  }
+}
