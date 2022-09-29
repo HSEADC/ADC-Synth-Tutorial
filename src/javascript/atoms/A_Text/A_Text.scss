@@ -1,10 +1,32 @@
 .A_Text {
+  font-family: 'PT Root UI';
+  font-weight: 400;
+
   &.instrumentHeader {
-    font-family: 'PT Root UI';
-    font-weight: 400;
     font-size: 18px;
     line-height: 52px;
     text-align: center;
     color: var(--white-grey);
+  }
+
+  &.sliderLabel {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 20px;
+    color: var(--black);
+  }
+
+  &.sliderDescription {
+    font-size: 14px;
+    line-height: 20px;
+    text-align: right;
+    color: var(--black);
+  }
+
+  &.codeExampleLabel {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 18px;
+    color: var(--light-grey);
   }
 }

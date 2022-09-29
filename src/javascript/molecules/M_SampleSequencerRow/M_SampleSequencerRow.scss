@@ -1,0 +1,10 @@
+.M_SampleSequencerRow {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  margin-top: 2px;
+
+  &:first-child {
+    margin: 0;
+  }
+}

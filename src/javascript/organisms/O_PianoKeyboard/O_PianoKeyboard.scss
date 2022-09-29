@@ -1,0 +1,46 @@
+.O_PianoKeyboard {
+  position: relative;
+  width: 600px;
+  height: 420px;
+  background-color: var(--dark-grey);
+
+  .C_PianoWhiteKeys {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: space-between;
+    width: 600px;
+    height: 420px;
+  }
+
+  .C_PianoBlackKeys {
+    position: absolute;
+    top: 0;
+    left: 58px;
+    display: flex;
+    justify-content: space-between;
+    width: 484px;
+    height: 280px;
+
+    .C_PianoBlackKeysPart {
+      display: flex;
+      justify-content: space-between;
+
+      &:first-child {
+        width: 140px;
+        height: 280px;
+      }
+
+      &:last-child {
+        width: 226px;
+        height: 280px;
+      }
+
+      .A_Button {
+        position: relative;
+        z-index: 1;
+      }
+    }
+  }
+}

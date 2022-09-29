@@ -3,6 +3,17 @@ const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const webpack = require('webpack')
 const path = require('path')
+// require('./src/samples/00001-Linn-9000-BassDrumrum1.mp3')
+
+// require('./src/samples/' + '00001-Linn-9000-BassDrumrum1' + '.mp3')
+
+// require.context('./samples', false, /\.mp3$/)
+
+// function importAll(r) {
+//   r.keys().forEach(r)
+// }
+//
+// importAll(require.context('./samples/', true, /\.mp3$/))
 
 module.exports = {
   entry: {
@@ -34,10 +45,10 @@ module.exports = {
         test: /\.html$/i,
         loader: 'html-loader'
       },
-      {
-        resourceQuery: /raw/,
-        type: 'asset/source'
-      },
+      // {
+      //   resourceQuery: /raw/,
+      //   type: 'asset/source'
+      // },
       {
         test: /\.(png|jpg|jpeg|gif|svg)$/i,
         type: 'asset/resource',

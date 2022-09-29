@@ -1,7 +1,7 @@
 body.lesson {
   padding-top: 54px;
   color: var(--white);
-  background: var(--medium-grey);
+  background: var(--grey);
 
   menu.menubar {
     position: fixed;
@@ -90,9 +90,17 @@ body.lesson {
     }
   }
 
+  // header,
+  // article {
+  //   width: 600px;
+  //   margin: auto;
+  // }
+
   header {
     display: flex;
     justify-content: space-between;
+    width: 600px;
+    margin: auto;
     padding: 32px 0;
 
     .titleContainer {
@@ -109,10 +117,10 @@ body.lesson {
       font-weight: 700;
       font-size: 14px;
       line-height: 18px;
-      color: var(--grey);
+      color: var(--light-grey);
     }
 
-    .title {
+    h1 {
       margin-top: 4px;
       font-family: 'PT Root UI';
       font-style: normal;
@@ -122,7 +130,7 @@ body.lesson {
       color: var(--white-grey);
     }
 
-    .description {
+    p {
       margin-top: 18px;
       font-family: 'PT Root UI';
       font-style: normal;
@@ -132,54 +140,66 @@ body.lesson {
     }
   }
 
-  // prettier-ignore
-  header, h1, h2, h3, p {
-    width: 600px;
-    margin: auto;
-  }
-
-  // prettier-ignore
-  h1, h2, h3, p {
-    font-family: 'PT Root UI';
-    font-style: normal;
-    font-weight: 700;
-  }
-
-  h1 {
-    margin-top: 40px;
-    font-size: 27px;
-    line-height: 38px;
-  }
-
-  h2 {
-    margin-top: 30px;
-    font-size: 24px;
-    line-height: 36px;
-  }
-
-  h3 {
-    margin-top: 22px;
-    font-size: 20px;
-    line-height: 24px;
-  }
-
-  p {
-    margin-top: 10px;
-    font-size: 18px;
-    font-weight: 400;
-    line-height: 28px;
-  }
-
-  .interactiveModuleContainer {
-    .interactiveModule {
-      position: relative;
+  article {
+    h2,
+    h3,
+    h4,
+    p {
       width: 600px;
-      height: 300px;
-      margin: 40px auto;
-      // background: var(--acid-green);
+      margin: auto;
+    }
 
-      &.wide {
-        width: 1185px;
+    a {
+      color: var(--white);
+
+      &:hover {
+        color: var(--acid-green);
+      }
+    }
+
+    // prettier-ignore
+    h1, h2, h3, h4, p {
+    font-family: 'PT Root UI';
+    font-weight: 700;
+    font-style: normal;
+  }
+
+    h2 {
+      margin-top: 40px;
+      font-size: 27px;
+      line-height: 38px;
+    }
+
+    h3 {
+      margin-top: 30px;
+      font-size: 24px;
+      line-height: 36px;
+    }
+
+    h4 {
+      margin-top: 22px;
+      font-size: 20px;
+      line-height: 24px;
+    }
+
+    p {
+      margin-top: 10px;
+      font-size: 18px;
+      font-weight: 400;
+      line-height: 28px;
+    }
+
+    .interactiveModuleContainer {
+      .interactiveModule {
+        position: relative;
+        width: 600px;
+        // height: 300px;
+        margin: 40px auto;
+        // background: var(--acid-green);
+
+        &.wide {
+          width: 1186px;
+        }
       }
     }
   }

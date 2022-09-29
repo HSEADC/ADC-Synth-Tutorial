@@ -1,10 +1,9 @@
-import './M_InstrumentHeaderWithButton.scss'
+import './M_InstrumentHeader.scss'
 
 import React, { PureComponent } from 'react'
 import ReactDOM from 'react-dom'
 
 import A_Text from '../../atoms/A_Text/A_Text.jsx'
-import A_ToggleButton from '../../atoms/A_ToggleButton/A_ToggleButton.jsx'
 
 export default class M_InstrumentHeaderWithButton extends PureComponent {
   constructor(props) {
@@ -12,11 +11,10 @@ export default class M_InstrumentHeaderWithButton extends PureComponent {
   }
 
   render() {
-    const { text, isOn, handleClick } = this.props
+    const { text } = this.props
 
     return (
-      <div className="M_InstrumentHeaderWithButton">
-        <A_ToggleButton type="play" isOn={isOn} handleClick={handleClick} />
+      <div className="M_InstrumentHeader">
         <A_Text type="instrumentHeader" text={text} />
       </div>
     )

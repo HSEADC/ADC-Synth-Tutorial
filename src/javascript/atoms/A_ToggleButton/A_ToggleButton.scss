@@ -1,12 +1,23 @@
 .A_ToggleButton {
+  cursor: pointer;
+
   &.play {
     width: 24px;
     height: 24px;
     background-image: url('../../../images/play.svg');
-    cursor: pointer;
 
     &.isOn {
       background-image: url('../../../images/pause.svg');
+    }
+  }
+
+  &.sampleSequencerBlock {
+    width: 72px;
+    height: 36px;
+    background-color: var(--white-grey);
+
+    &.isOn {
+      background-color: var(--acid-green);
     }
   }
 }

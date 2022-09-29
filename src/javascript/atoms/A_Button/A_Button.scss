@@ -1,0 +1,15 @@
+.A_Button {
+  cursor: pointer;
+
+  &.pianoWhite {
+    width: 84px;
+    height: 420px;
+    background-color: var(--white);
+  }
+
+  &.pianoBlack {
+    width: 54px;
+    height: 280px;
+    background-color: var(--grey);
+  }
+}

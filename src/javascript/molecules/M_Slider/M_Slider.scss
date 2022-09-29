@@ -1,0 +1,25 @@
+.M_Slider {
+  padding: 16px 20px;
+  color: var(--black);
+  background-color: var(--white-grey);
+
+  .W_SliderHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+
+    .A_Text {
+      &.sliderLabel {
+        width: 110px;
+      }
+
+      &.sliderDescription {
+        width: 280px;
+      }
+    }
+  }
+
+  .A_SliderInput {
+    margin: 16px 0 0 0;
+  }
+}
