@@ -3,24 +3,26 @@ import './M_SampleSequencerRow.scss'
 import React, { PureComponent } from 'react'
 import ReactDOM from 'react-dom'
 
-import A_ToggleButton from '../../atoms/A_ToggleButton/A_ToggleButton.jsx'
+import A_SampleSequencerStep from '../../atoms/A_SampleSequencerStep/A_SampleSequencerStep.jsx'
 
 export default class M_SampleSequencerRow extends PureComponent {
   constructor(props) {
     super(props)
+
+    this.state = {
+      name: props.name
+    }
   }
 
-  renderSampleSequencerBlocks = () => {
-    const { note, sequence, handleClick } = this.props
+  renderSampleSequencerSteps = () => {
+    const { note, sequence, ticksPlayed, handleClick } = this.props
     const elements = []
-
-    console.log(sequence)
 
     ;(16).times((i) => {
       elements.push(
-        <A_ToggleButton
-          type="sampleSequencerBlock"
+        <A_SampleSequencerStep
           isOn={sequence.includes(i)}
+          currentStep={ticksPlayed === i ? true : false}
           handleClick={() => {
             handleClick(note, i)
           }}
@@ -33,9 +35,15 @@ export default class M_SampleSequencerRow extends PureComponent {
   }
 
   render() {
+    const { name } = this.state
+
     return (
       <div className="M_SampleSequencerRow">
-        {this.renderSampleSequencerBlocks()}
+        <div className="name">{name}</div>
+
+        <div className="W_SampleSequencerRowSteps">
+          {this.renderSampleSequencerSteps()}
+        </div>
       </div>
     )
   }

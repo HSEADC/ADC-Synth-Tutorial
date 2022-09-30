@@ -11,7 +11,7 @@ export default class O_SampleSequencerGrid extends PureComponent {
   }
 
   renderSampleSequencerRows = () => {
-    const { samples, sequence, handleClick } = this.props
+    const { samples, sequence, ticksPlayed, handleClick } = this.props
     const elements = []
 
     Object.keys(samples).forEach((key, i) => {
@@ -20,6 +20,7 @@ export default class O_SampleSequencerGrid extends PureComponent {
           note={key}
           name={samples[key]}
           sequence={sequence[key]}
+          ticksPlayed={ticksPlayed}
           handleClick={handleClick}
           key={i}
         />
