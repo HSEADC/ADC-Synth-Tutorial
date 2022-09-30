@@ -10,7 +10,7 @@ export default class M_SampleSequencerRow extends PureComponent {
     super(props)
 
     this.state = {
-      name: props.name
+      name: props.name.replaceAll('-', ' ')
     }
   }
 

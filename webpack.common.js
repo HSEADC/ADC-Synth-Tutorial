@@ -1,19 +1,11 @@
 const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CssMinimizerPlugin = require('css-minimizer-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
+const Dotenv = require('dotenv-webpack')
 const webpack = require('webpack')
 const path = require('path')
-// require('./src/samples/00001-Linn-9000-BassDrumrum1.mp3')
-
-// require('./src/samples/' + '00001-Linn-9000-BassDrumrum1' + '.mp3')
-
-// require.context('./samples', false, /\.mp3$/)
-
-// function importAll(r) {
-//   r.keys().forEach(r)
-// }
-//
-// importAll(require.context('./samples/', true, /\.mp3$/))
+const isProduction =
+  process.argv[process.argv.indexOf('--mode') + 1] === 'production'
 
 module.exports = {
   entry: {
@@ -73,6 +65,9 @@ module.exports = {
     ]
   },
   plugins: [
+    new Dotenv({
+      path: `./.env.${isProduction ? 'production' : 'development'}`
+    }),
     new MiniCssExtractPlugin({
       filename: '[name].css',
       chunkFilename: '[id].css'

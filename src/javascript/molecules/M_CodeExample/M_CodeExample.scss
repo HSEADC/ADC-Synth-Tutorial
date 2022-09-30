@@ -1,5 +1,12 @@
+.wide {
+  .M_CodeExample {
+    width: 800px;
+  }
+}
+
 .M_CodeExample {
-  margin-top: 40px;
+  width: 600px;
+  margin: 40px auto 0;
 
   .A_Text {
     margin-bottom: 16px;
@@ -8,7 +15,7 @@
   // .A_Code
   pre {
     display: block;
-    width: 600px;
+    width: 100%;
     padding: 14px 20px 16px;
     font-family: 'PT Mono', monospace;
     font-size: 18px;

@@ -1,3 +1,5 @@
+import * as Tone from 'tone'
+
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 
