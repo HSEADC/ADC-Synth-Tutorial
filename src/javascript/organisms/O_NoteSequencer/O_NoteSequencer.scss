@@ -1,0 +1,28 @@
+.O_NoteSequencer {
+  height: 338px;
+  padding: 2px;
+  overflow-y: scroll;
+  background-color: var(--white);
+
+  .W_NoteSequencerScroller {
+    display: flex;
+  }
+
+  .C_NoteSequencerPianoKeyboards {
+    width: 114px;
+    margin-right: 2px;
+    background-color: var(--white-grey);
+
+    .M_NoteSequencerPianoKeyboard {
+      margin-bottom: 2px;
+    }
+  }
+
+  .C_NoteSequencerGrid {
+    width: 1066px;
+
+    .M_NoteSequencerRow {
+      margin-bottom: 2px;
+    }
+  }
+}

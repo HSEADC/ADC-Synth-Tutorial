@@ -7,7 +7,7 @@ import M_CodeExample from '../molecules/M_CodeExample/M_CodeExample.jsx'
 
 let synth
 
-export default class T_ToneSynthTriggerNote extends Component {
+export default class MOD_ToneSynthTriggerNote extends Component {
   constructor(props) {
     super(props)
 
@@ -54,7 +54,7 @@ synth.triggerAttackRelease('C4', '1')`
 
   render() {
     return (
-      <div className="T_OscillatorFrequency">
+      <div className="MOD_ToneSynthTriggerNote">
         <M_InstrumentHeaderWithButton
           text="Tone Synth"
           isOn={false}

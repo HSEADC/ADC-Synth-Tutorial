@@ -8,7 +8,7 @@ import M_CodeExample from '../molecules/M_CodeExample/M_CodeExample.jsx'
 let audioCtx
 let oscillator
 
-export default class T_OscillatorFrequency extends Component {
+export default class MOD_OscillatorFrequency extends Component {
   constructor(props) {
     super(props)
 
@@ -101,7 +101,7 @@ oscillator.start()`
     const step = 1
 
     return (
-      <div className="T_OscillatorFrequency">
+      <div className="MOD_OscillatorFrequency">
         <M_InstrumentHeaderWithButton
           text="Oscillator"
           isOn={isOn}

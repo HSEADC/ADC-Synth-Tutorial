@@ -8,7 +8,7 @@ import A_InstrumentConnectionArrow from '../atoms/A_InstrumentConnectionArrow/A_
 
 let synth
 
-export default class T_PianoKeyboardWithSynth extends Component {
+export default class MOD_PianoKeyboardWithSynth extends Component {
   constructor(props) {
     super(props)
 
@@ -42,7 +42,7 @@ export default class T_PianoKeyboardWithSynth extends Component {
 
   render() {
     return (
-      <div className="T_OscillatorFrequency">
+      <div className="MOD_PianoKeyboardWithSynth">
         <M_InstrumentHeader text="Piano Keyboard" />
         <O_PianoKeyboard handleClick={this.handleClick} />
         <A_InstrumentConnectionArrow />

@@ -25,7 +25,7 @@ const samples = {
 let sampler
 let part
 
-export default class T_SampleSequencer extends Component {
+export default class MOD_SampleSequencer extends Component {
   constructor(props) {
     super(props)
 
@@ -302,7 +302,7 @@ Tone.Transport.start()
     }
 
     return (
-      <div className="T_SampleSequencer">
+      <div className="MOD_SampleSequencer">
         <M_InstrumentHeaderWithButton
           text="Sample Sequencer"
           isOn={playing}
