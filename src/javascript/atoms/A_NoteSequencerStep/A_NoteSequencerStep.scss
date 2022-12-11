@@ -1,0 +1,13 @@
+.A_NoteSequencerStep {
+  height: 12px;
+  background-color: var(--white-grey);
+  cursor: pointer;
+
+  &.currentStep {
+    background-color: var(--light-grey);
+  }
+
+  &:hover {
+    background-color: var(--light-grey);
+  }
+}

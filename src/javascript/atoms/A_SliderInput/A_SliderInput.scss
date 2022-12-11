@@ -1,0 +1,32 @@
+.A_SliderInput {
+  &[type='range'] {
+    -webkit-appearance: none;
+    width: 100%;
+    background-color: var(--white-grey);
+
+    &::-webkit-slider-runnable-track {
+      height: 4px;
+      background: var(--grey);
+      border: none;
+    }
+
+    &::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      border: none;
+      height: 16px;
+      width: 16px;
+      border-radius: 50%;
+      background: var(--acid-green);
+      margin-top: -6px;
+      cursor: pointer;
+    }
+
+    &:focus {
+      outline: none;
+
+      &::-webkit-slider-runnable-track {
+        background: var(--black);
+      }
+    }
+  }
+}

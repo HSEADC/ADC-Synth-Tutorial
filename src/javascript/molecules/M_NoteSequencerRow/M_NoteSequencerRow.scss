@@ -1,0 +1,23 @@
+.M_NoteSequencerRow {
+  position: relative;
+
+  .C_NoteSequencerSteps {
+    display: flex;
+
+    .A_NoteSequencerStep {
+      flex: 1;
+      align-self: stretch;
+      margin-right: 2px;
+
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+
+  .C_NoteSequenceSteps {
+    position: absolute;
+    top: 0;
+    z-index: 1;
+  }
+}

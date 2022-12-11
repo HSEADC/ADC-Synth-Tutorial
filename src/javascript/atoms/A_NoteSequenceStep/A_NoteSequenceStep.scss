@@ -1,0 +1,10 @@
+.A_NoteSequenceStep {
+  position: absolute;
+  top: 0;
+  height: 12px;
+  background-color: var(--acid-green);
+
+  &.temporary {
+    pointer-events: none;
+  }
+}

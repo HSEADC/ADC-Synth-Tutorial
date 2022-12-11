@@ -1,0 +1,19 @@
+.A_SampleSequencerStep {
+  width: 72px;
+  height: 36px;
+  background-color: var(--white-grey);
+  transition: all 0.1s ease;
+  cursor: pointer;
+
+  &.isOn {
+    background-color: var(--acid-green) !important;
+  }
+
+  &.currentStep {
+    background-color: var(--light-grey);
+  }
+
+  &:hover {
+    background-color: var(--light-grey);
+  }
+}

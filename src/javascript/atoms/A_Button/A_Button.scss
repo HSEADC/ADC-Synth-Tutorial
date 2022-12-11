@@ -1,0 +1,91 @@
+.A_Button {
+  cursor: pointer;
+
+  &.pianoWhite {
+    width: 84px;
+    height: 420px;
+    background-color: var(--white);
+  }
+
+  &.pianoBlack {
+    width: 54px;
+    height: 280px;
+    background-color: var(--grey);
+  }
+
+  &.pianoKey {
+    position: absolute;
+    left: 0;
+
+    &:nth-child(1),
+    &:nth-child(3),
+    &:nth-child(5),
+    &:nth-child(7),
+    &:nth-child(8),
+    &:nth-child(10),
+    &:nth-child(12) {
+      width: 114px;
+      height: 22px;
+      background-color: var(--white);
+    }
+
+    &:nth-child(2),
+    &:nth-child(4),
+    &:nth-child(6),
+    &:nth-child(9),
+    &:nth-child(11) {
+      width: 76px;
+      height: 16px;
+      z-index: 1;
+      background-color: var(--grey);
+    }
+
+    &:nth-child(1) {
+      top: 0;
+    }
+
+    &:nth-child(2) {
+      top: 15px;
+    }
+
+    &:nth-child(3) {
+      top: 24px;
+    }
+
+    &:nth-child(4) {
+      top: 39px;
+    }
+
+    &:nth-child(5) {
+      top: 48px;
+    }
+
+    &:nth-child(6) {
+      top: 63px;
+    }
+
+    &:nth-child(7) {
+      top: 72px;
+    }
+
+    &:nth-child(8) {
+      top: 96px;
+    }
+
+    &:nth-child(9) {
+      top: 111px;
+    }
+
+    &:nth-child(10) {
+      top: 120px;
+    }
+
+    &:nth-child(11) {
+      top: 135px;
+    }
+
+    &:nth-child(12) {
+      top: 144px;
+    }
+  }
+}

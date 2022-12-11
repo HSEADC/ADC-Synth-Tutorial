@@ -11,8 +11,10 @@
     "@babel/plugin-proposal-class-properties": "^7.16.7",
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
+    "babel-loader": "^8.2.5",
     "css-loader": "^5.2.4",
     "css-minimizer-webpack-plugin": "^2.0.0",
+    "dotenv-webpack": "^8.0.1",
     "extract-loader": "^5.1.0",
     "file-loader": "^6.2.0",
     "html-loader": "^2.1.2",
@@ -22,7 +24,14 @@
     "sass-loader": "^11.0.1",
     "webpack": "^5.33.2",
     "webpack-cli": "^4.6.0",
-    "webpack-dev-server": "^3.11.2",
+    "webpack-dev-server": "^4.11.0",
     "webpack-merge": "^5.7.3"
+  },
+  "dependencies": {
+    "classnames": "^2.3.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-syntax-highlighter": "^15.5.0",
+    "tone": "^14.7.77"
   }
 }

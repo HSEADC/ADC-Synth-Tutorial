@@ -1,0 +1,11 @@
+.M_InstrumentHeaderWithButton {
+  position: relative;
+  padding: 0 48px;
+  background-color: var(--black);
+
+  .A_ToggleButton {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+  }
+}
