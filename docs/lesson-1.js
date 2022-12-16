@@ -37199,7 +37199,7 @@ var MOD_MelodySequencer = /*#__PURE__*/function (_Component) {
         samplerPartNoteCode.push('  {'); // prettier-ignore
 
         samplerPartNoteCode.push("    time: '".concat(_this.transformToTransportTime(step), "',"));
-        samplerPartNoteCode.push("    noteName: '".concat(note, "',")); // prettier-ignore
+        samplerPartNoteCode.push("    noteName: '".concat(note).concat(octave, "',")); // prettier-ignore
 
         samplerPartNoteCode.push("    duration: '".concat(_this.transformToDuration(duration), "',"));
         samplerPartNoteCode.push('    velocity: 1');
@@ -37228,7 +37228,7 @@ var MOD_MelodySequencer = /*#__PURE__*/function (_Component) {
       mouseRow: {},
       ticksPlayed: -1,
       loopDuration: 2,
-      stepDuration: 8,
+      stepDuration: 16,
       sequence: {},
       stepWidth: 0
     };
