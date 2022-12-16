@@ -22,7 +22,7 @@ export default class MOD_MelodySequencer extends Component {
       mouseRow: {},
       ticksPlayed: -1,
       loopDuration: 2,
-      stepDuration: 8,
+      stepDuration: 16,
       sequence: {},
       stepWidth: 0
     }
@@ -355,7 +355,7 @@ export default class MOD_MelodySequencer extends Component {
       samplerPartNoteCode.push('  {')
       // prettier-ignore
       samplerPartNoteCode.push(`    time: '${this.transformToTransportTime(step)}',`)
-      samplerPartNoteCode.push(`    noteName: '${note}',`)
+      samplerPartNoteCode.push(`    noteName: '${note}${octave}',`)
       // prettier-ignore
       samplerPartNoteCode.push(`    duration: '${this.transformToDuration(duration)}',`)
       samplerPartNoteCode.push('    velocity: 1')
