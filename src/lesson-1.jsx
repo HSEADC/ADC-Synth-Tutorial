@@ -10,9 +10,9 @@ import MOD_SampleSequencer from './javascript/modules/MOD_SampleSequencer.jsx'
 import MOD_MelodySequencer from './javascript/modules/MOD_MelodySequencer.jsx'
 
 document.addEventListener('DOMContentLoaded', () => {
-  const container1 = document.getElementById('interactiveModule_1')
-  const root1 = createRoot(container1)
-  root1.render(<MOD_OscillatorFrequency />)
+  // const container1 = document.getElementById('interactiveModule_1')
+  // const root1 = createRoot(container1)
+  // root1.render(<MOD_OscillatorFrequency />)
 
   const container2 = document.getElementById('interactiveModule_2')
   const root2 = createRoot(container2)
