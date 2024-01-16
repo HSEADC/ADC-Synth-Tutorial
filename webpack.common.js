@@ -10,7 +10,9 @@ const isProduction =
 module.exports = {
   entry: {
     index: './src/index.js',
-    'lesson-1': './src/lesson-1.jsx'
+    'lesson-1': './src/lesson-1.jsx',
+    MOD_OscillatorFrequency:
+      './src/javascript/modules/MOD_OscillatorFrequency_loaded.jsx'
   },
   output: {
     filename: '[name].js',
@@ -113,6 +115,13 @@ module.exports = {
       template: './src/lessons/lesson-5.html',
       filename: './lessons/lesson-5.html',
       chunks: ['index']
+    }),
+    new HtmlWebpackPlugin({
+      hash: true,
+      scriptLoading: 'blocking',
+      template: './src/javascript/modules/MOD_OscillatorFrequency.html',
+      filename: './modules/MOD_OscillatorFrequency.html',
+      chunks: ['index', 'MOD_OscillatorFrequency']
     })
   ],
   optimization: {
