@@ -12,7 +12,15 @@ module.exports = {
     index: './src/index.js',
     'lesson-1': './src/lesson-1.jsx',
     MOD_OscillatorFrequency:
-      './src/javascript/modules/MOD_OscillatorFrequency_loaded.jsx'
+      './src/javascript/modules/MOD_OscillatorFrequency_loader.jsx',
+    MOD_ToneSynthTriggerNote:
+      './src/javascript/modules/MOD_ToneSynthTriggerNote_loader.jsx',
+    MOD_PianoKeyboardWithSynth:
+      './src/javascript/modules/MOD_PianoKeyboardWithSynth_loader.jsx',
+    MOD_SampleSequencer:
+      './src/javascript/modules/MOD_SampleSequencer_loader.jsx',
+    MOD_MelodySequencer:
+      './src/javascript/modules/MOD_MelodySequencer_loader.jsx'
   },
   output: {
     filename: '[name].js',
@@ -122,6 +130,34 @@ module.exports = {
       template: './src/javascript/modules/MOD_OscillatorFrequency.html',
       filename: './modules/MOD_OscillatorFrequency.html',
       chunks: ['index', 'MOD_OscillatorFrequency']
+    }),
+    new HtmlWebpackPlugin({
+      hash: true,
+      scriptLoading: 'blocking',
+      template: './src/javascript/modules/MOD_ToneSynthTriggerNote.html',
+      filename: './modules/MOD_ToneSynthTriggerNote.html',
+      chunks: ['index', 'MOD_ToneSynthTriggerNote']
+    }),
+    new HtmlWebpackPlugin({
+      hash: true,
+      scriptLoading: 'blocking',
+      template: './src/javascript/modules/MOD_PianoKeyboardWithSynth.html',
+      filename: './modules/MOD_PianoKeyboardWithSynth.html',
+      chunks: ['index', 'MOD_PianoKeyboardWithSynth']
+    }),
+    new HtmlWebpackPlugin({
+      hash: true,
+      scriptLoading: 'blocking',
+      template: './src/javascript/modules/MOD_SampleSequencer.html',
+      filename: './modules/MOD_SampleSequencer.html',
+      chunks: ['index', 'MOD_SampleSequencer']
+    }),
+    new HtmlWebpackPlugin({
+      hash: true,
+      scriptLoading: 'blocking',
+      template: './src/javascript/modules/MOD_MelodySequencer.html',
+      filename: './modules/MOD_MelodySequencer.html',
+      chunks: ['index', 'MOD_MelodySequencer']
     })
   ],
   optimization: {
