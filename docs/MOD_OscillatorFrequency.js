@@ -13143,14 +13143,14 @@ function Debug_warn(...args) {
 /**
  * Test if the arg is undefined
  */
-function isUndef(arg) {
+function TypeCheck_isUndef(arg) {
     return typeof arg === "undefined";
 }
 /**
  * Test if the arg is not undefined
  */
 function TypeCheck_isDefined(arg) {
-    return !isUndef(arg);
+    return !TypeCheck_isUndef(arg);
 }
 /**
  * Test if the arg is a function
@@ -13167,13 +13167,13 @@ function TypeCheck_isNumber(arg) {
 /**
  * Test if the given argument is an object literal (i.e. `{}`);
  */
-function isObject(arg) {
+function TypeCheck_isObject(arg) {
     return (Object.prototype.toString.call(arg) === "[object Object]" && arg.constructor === Object);
 }
 /**
  * Test if the argument is a boolean.
  */
-function isBoolean(arg) {
+function TypeCheck_isBoolean(arg) {
     return (typeof arg === "boolean");
 }
 /**
@@ -13643,12 +13643,12 @@ function Defaults_deepMerge(target, ...sources) {
         return target;
     }
     const source = sources.shift();
-    if (isObject(target) && isObject(source)) {
+    if (TypeCheck_isObject(target) && TypeCheck_isObject(source)) {
         for (const key in source) {
             if (noCopy(key, source[key])) {
                 target[key] = source[key];
             }
-            else if (isObject(source[key])) {
+            else if (TypeCheck_isObject(source[key])) {
                 if (!target[key]) {
                     Object.assign(target, { [key]: {} });
                 }
@@ -13675,7 +13675,7 @@ function Defaults_optionsFromArguments(defaults, argsArray, keys = [], objKey) {
     const opts = {};
     const args = Array.from(argsArray);
     // if the first argument is an object and has an object key
-    if (isObject(args[0]) && objKey && !Reflect.has(args[0], objKey)) {
+    if (TypeCheck_isObject(args[0]) && objKey && !Reflect.has(args[0], objKey)) {
         // if it's not part of the defaults
         const partOfDefaults = Object.keys(args[0]).some(key => Reflect.has(defaults, key));
         if (!partOfDefaults) {
@@ -13687,7 +13687,7 @@ function Defaults_optionsFromArguments(defaults, argsArray, keys = [], objKey) {
             args.shift();
         }
     }
-    if (args.length === 1 && isObject(args[0])) {
+    if (args.length === 1 && TypeCheck_isObject(args[0])) {
         Defaults_deepMerge(opts, args[0]);
     }
     else {
@@ -13710,7 +13710,7 @@ function getDefaultsFromInstance(instance) {
  * Take an array of arguments and return a formatted options object.
  */
 function Defaults_defaultArg(given, fallback) {
-    if (isUndef(given)) {
+    if (TypeCheck_isUndef(given)) {
         return fallback;
     }
     else {
@@ -14265,7 +14265,7 @@ class Emitter extends Tone {
         // split the event
         const events = event.split(/\W+/);
         events.forEach(eventName => {
-            if (isUndef(this._events)) {
+            if (TypeCheck_isUndef(this._events)) {
                 this._events = {};
             }
             if (!this._events.hasOwnProperty(eventName)) {
@@ -14299,11 +14299,11 @@ class Emitter extends Tone {
     off(event, callback) {
         const events = event.split(/\W+/);
         events.forEach(eventName => {
-            if (isUndef(this._events)) {
+            if (TypeCheck_isUndef(this._events)) {
                 this._events = {};
             }
             if (this._events.hasOwnProperty(event)) {
-                if (isUndef(callback)) {
+                if (TypeCheck_isUndef(callback)) {
                     this._events[event] = [];
                 }
                 else {
@@ -15723,10 +15723,10 @@ class TimeBaseClass extends Tone {
         if (this._val instanceof TimeBaseClass) {
             this.fromType(this._val);
         }
-        if (isUndef(this._val)) {
+        if (TypeCheck_isUndef(this._val)) {
             return this._noArg();
         }
-        else if (TypeCheck_isString(this._val) && isUndef(this._units)) {
+        else if (TypeCheck_isString(this._val) && TypeCheck_isUndef(this._units)) {
             for (const units in this._expressions) {
                 if (this._expressions[units].regexp.test(this._val.trim())) {
                     this._units = units;
@@ -15734,7 +15734,7 @@ class TimeBaseClass extends Tone {
                 }
             }
         }
-        else if (isObject(this._val)) {
+        else if (TypeCheck_isObject(this._val)) {
             let total = 0;
             for (const typeName in this._val) {
                 if (TypeCheck_isDefined(this._val[typeName])) {
@@ -16372,7 +16372,7 @@ class ToneWithContext_ToneWithContext extends Tone {
         const options = this.get();
         // remove attributes from the prop that are not in the partial
         Object.keys(options).forEach(name => {
-            if (isUndef(props[name])) {
+            if (TypeCheck_isUndef(props[name])) {
                 delete options[name];
             }
         });
@@ -16396,7 +16396,7 @@ class ToneWithContext_ToneWithContext extends Tone {
                     defaults[attribute] = member._getPartialProperties(defaults[attribute]);
                     // otherwise make sure it's a serializable type
                 }
-                else if (TypeCheck_isArray(member) || TypeCheck_isNumber(member) || TypeCheck_isString(member) || isBoolean(member)) {
+                else if (TypeCheck_isArray(member) || TypeCheck_isNumber(member) || TypeCheck_isString(member) || TypeCheck_isBoolean(member)) {
                     defaults[attribute] = member;
                 }
                 else {
@@ -16447,7 +16447,7 @@ class ToneWithContext_ToneWithContext extends Tone {
  * A Timeline State. Provides the methods: `setStateAtTime("state", time)` and `getValueAtTime(time)`
  * @param initial The initial state of the StateTimeline.  Defaults to `undefined`
  */
-class StateTimeline extends Timeline {
+class StateTimeline_StateTimeline extends Timeline {
     constructor(initial = "stopped") {
         super();
         this.name = "StateTimeline";
@@ -17889,7 +17889,7 @@ class TickParam extends Param_Param {
                 value: 0,
             };
         }
-        else if (isUndef(event.ticks)) {
+        else if (TypeCheck_isUndef(event.ticks)) {
             const previousEvent = this._events.previousEvent(event);
             event.ticks = this._getTicksUntilEvent(previousEvent, event.time);
         }
@@ -18104,7 +18104,7 @@ class TickSource extends ToneWithContext_ToneWithContext {
         /**
          * The state timeline
          */
-        this._state = new StateTimeline();
+        this._state = new StateTimeline_StateTimeline();
         /**
          * The offset values of the ticks
          */
@@ -18408,7 +18408,7 @@ class Clock_Clock extends ToneWithContext_ToneWithContext {
         /**
          * Keep track of the playback state
          */
-        this._state = new StateTimeline("stopped");
+        this._state = new StateTimeline_StateTimeline("stopped");
         /**
          * Context bound reference to the _loop method
          * This is necessary to remove the event in the end.
@@ -20669,7 +20669,7 @@ class Source_Source extends ToneAudioNode_ToneAudioNode {
         /**
          * Keep track of the scheduled state.
          */
-        this._state = new StateTimeline("stopped");
+        this._state = new StateTimeline_StateTimeline("stopped");
         /**
          * The synced `start` callback function from the transport
          */
@@ -20756,7 +20756,7 @@ class Source_Source extends ToneAudioNode_ToneAudioNode {
      * source.start("+0.5"); // starts the source 0.5 seconds from now
      */
     start(time, offset, duration) {
-        let computedTime = isUndef(time) && this._synced ? this.context.transport.seconds : this.toSeconds(time);
+        let computedTime = TypeCheck_isUndef(time) && this._synced ? this.context.transport.seconds : this.toSeconds(time);
         computedTime = this._clampToCurrentTime(computedTime);
         // if it's started, stop it and restart it
         if (!this._synced && this._state.getValueAtTime(computedTime) === "started") {
@@ -20805,7 +20805,7 @@ class Source_Source extends ToneAudioNode_ToneAudioNode {
      * source.stop("+0.5"); // stops the source 0.5 seconds from now
      */
     stop(time) {
-        let computedTime = isUndef(time) && this._synced ? this.context.transport.seconds : this.toSeconds(time);
+        let computedTime = TypeCheck_isUndef(time) && this._synced ? this.context.transport.seconds : this.toSeconds(time);
         computedTime = this._clampToCurrentTime(computedTime);
         if (this._state.getValueAtTime(computedTime) === "started" || TypeCheck_isDefined(this._state.getNextState("started", computedTime))) {
             this.log("stop", computedTime);
@@ -24034,7 +24034,7 @@ class Player_Player extends Source_Source {
         // add it to the array of active sources
         this._activeSources.add(source);
         // start it
-        if (this._loop && isUndef(origDuration)) {
+        if (this._loop && TypeCheck_isUndef(origDuration)) {
             source.start(startTime, computedOffset);
         }
         else {
@@ -25288,7 +25288,7 @@ class Envelope_Envelope extends ToneAudioNode_ToneAudioNode {
         // check if it's a valid type
         if (TypeCheck_isString(curve) && Reflect.has(EnvelopeCurves, curve)) {
             const curveDef = EnvelopeCurves[curve];
-            if (isObject(curveDef)) {
+            if (TypeCheck_isObject(curveDef)) {
                 if (name !== "_decayCurve") {
                     this[name] = curveDef[direction];
                 }
@@ -28343,9 +28343,9 @@ __decorate([
  * chordEvent.loopEnd = "1m";
  * @category Event
  */
-class ToneEvent_ToneEvent extends ToneWithContext_ToneWithContext {
+class ToneEvent_ToneEvent extends (/* unused pure expression or super */ null && (ToneWithContext)) {
     constructor() {
-        super(Defaults_optionsFromArguments(ToneEvent_ToneEvent.getDefaults(), arguments, ["callback", "value"]));
+        super(optionsFromArguments(ToneEvent_ToneEvent.getDefaults(), arguments, ["callback", "value"]));
         this.name = "ToneEvent";
         /**
          * Tracks the scheduled events
@@ -28355,7 +28355,7 @@ class ToneEvent_ToneEvent extends ToneWithContext_ToneWithContext {
          * A delay time from when the event is scheduled to start
          */
         this._startOffset = 0;
-        const options = Defaults_optionsFromArguments(ToneEvent_ToneEvent.getDefaults(), arguments, ["callback", "value"]);
+        const options = optionsFromArguments(ToneEvent_ToneEvent.getDefaults(), arguments, ["callback", "value"]);
         this._loop = options.loop;
         this.callback = options.callback;
         this.value = options.value;
@@ -28371,8 +28371,8 @@ class ToneEvent_ToneEvent extends ToneWithContext_ToneWithContext {
         this._rescheduleEvents();
     }
     static getDefaults() {
-        return Object.assign(ToneWithContext_ToneWithContext.getDefaults(), {
-            callback: Interface_noOp,
+        return Object.assign(ToneWithContext.getDefaults(), {
+            callback: noOp,
             humanize: false,
             loop: false,
             loopEnd: "1m",
@@ -28397,9 +28397,9 @@ class ToneEvent_ToneEvent extends ToneWithContext_ToneWithContext {
                     this.context.transport.clear(event.id);
                 }
                 const startTick = event.time + Math.round(this.startOffset / this._playbackRate);
-                if (this._loop === true || TypeCheck_isNumber(this._loop) && this._loop > 1) {
+                if (this._loop === true || isNumber(this._loop) && this._loop > 1) {
                     duration = Infinity;
-                    if (TypeCheck_isNumber(this._loop)) {
+                    if (isNumber(this._loop)) {
                         duration = (this._loop) * this._getLoopDuration();
                     }
                     const nextEvent = this._state.getAfter(startTick);
@@ -28409,13 +28409,13 @@ class ToneEvent_ToneEvent extends ToneWithContext_ToneWithContext {
                     if (duration !== Infinity) {
                         // schedule a stop since it's finite duration
                         this._state.setStateAtTime("stopped", startTick + duration + 1, { id: -1 });
-                        duration = new Ticks_TicksClass(this.context, duration);
+                        duration = new TicksClass(this.context, duration);
                     }
-                    const interval = new Ticks_TicksClass(this.context, this._getLoopDuration());
-                    event.id = this.context.transport.scheduleRepeat(this._tick.bind(this), interval, new Ticks_TicksClass(this.context, startTick), duration);
+                    const interval = new TicksClass(this.context, this._getLoopDuration());
+                    event.id = this.context.transport.scheduleRepeat(this._tick.bind(this), interval, new TicksClass(this.context, startTick), duration);
                 }
                 else {
-                    event.id = this.context.transport.schedule(this._tick.bind(this), new Ticks_TicksClass(this.context, startTick));
+                    event.id = this.context.transport.schedule(this._tick.bind(this), new TicksClass(this.context, startTick));
                 }
             }
         });
@@ -28497,7 +28497,7 @@ class ToneEvent_ToneEvent extends ToneWithContext_ToneWithContext {
      * @param  time  The time after which events will be cancel.
      */
     cancel(time) {
-        time = Defaults_defaultArg(time, -Infinity);
+        time = defaultArg(time, -Infinity);
         const ticks = this.toTicks(time);
         this._state.forEachFrom(ticks, event => {
             this.context.transport.clear(event.id);
@@ -28569,7 +28569,7 @@ class ToneEvent_ToneEvent extends ToneWithContext_ToneWithContext {
      * if ToneEvent.loop is true.
      */
     get loopEnd() {
-        return new Ticks_TicksClass(this.context, this._loopEnd).toSeconds();
+        return new TicksClass(this.context, this._loopEnd).toSeconds();
     }
     set loopEnd(loopEnd) {
         this._loopEnd = this.toTicks(loopEnd);
@@ -28581,7 +28581,7 @@ class ToneEvent_ToneEvent extends ToneWithContext_ToneWithContext {
      * The time when the loop should start.
      */
     get loopStart() {
-        return new Ticks_TicksClass(this.context, this._loopStart).toSeconds();
+        return new TicksClass(this.context, this._loopStart).toSeconds();
     }
     set loopStart(loopStart) {
         this._loopStart = this.toTicks(loopStart);
@@ -28814,9 +28814,9 @@ class Loop_Loop extends (/* unused pure expression or super */ null && (ToneWith
  * Tone.Transport.start();
  * @category Event
  */
-class Part_Part extends ToneEvent_ToneEvent {
+class Part_Part extends (/* unused pure expression or super */ null && (ToneEvent)) {
     constructor() {
-        super(Defaults_optionsFromArguments(Part_Part.getDefaults(), arguments, ["callback", "events"]));
+        super(optionsFromArguments(Part_Part.getDefaults(), arguments, ["callback", "events"]));
         this.name = "Part";
         /**
          * Tracks the scheduled events
@@ -28826,12 +28826,12 @@ class Part_Part extends ToneEvent_ToneEvent {
          * The events that belong to this part
          */
         this._events = new Set();
-        const options = Defaults_optionsFromArguments(Part_Part.getDefaults(), arguments, ["callback", "events"]);
+        const options = optionsFromArguments(Part_Part.getDefaults(), arguments, ["callback", "events"]);
         // make sure things are assigned in the right order
         this._state.increasing = true;
         // add the events
         options.events.forEach(event => {
-            if (TypeCheck_isArray(event)) {
+            if (isArray(event)) {
                 this.add(event[0], event[1]);
             }
             else {
@@ -28840,7 +28840,7 @@ class Part_Part extends ToneEvent_ToneEvent {
         });
     }
     static getDefaults() {
-        return Object.assign(ToneEvent_ToneEvent.getDefaults(), {
+        return Object.assign(ToneEvent.getDefaults(), {
             events: [],
         });
     }
@@ -28852,12 +28852,12 @@ class Part_Part extends ToneEvent_ToneEvent {
     start(time, offset) {
         const ticks = this.toTicks(time);
         if (this._state.getValueAtTime(ticks) !== "started") {
-            offset = Defaults_defaultArg(offset, this._loop ? this._loopStart : 0);
+            offset = defaultArg(offset, this._loop ? this._loopStart : 0);
             if (this._loop) {
-                offset = Defaults_defaultArg(offset, this._loopStart);
+                offset = defaultArg(offset, this._loopStart);
             }
             else {
-                offset = Defaults_defaultArg(offset, 0);
+                offset = defaultArg(offset, 0);
             }
             const computedOffset = this.toTicks(offset);
             this._state.add({
@@ -28887,15 +28887,15 @@ class Part_Part extends ToneEvent_ToneEvent {
                     // start it on the next loop
                     ticks += this._getLoopDuration();
                 }
-                event.start(new Ticks_TicksClass(this.context, ticks));
+                event.start(new TicksClass(this.context, ticks));
             }
             else if (event.startOffset < this._loopStart && event.startOffset >= offset) {
                 event.loop = false;
-                event.start(new Ticks_TicksClass(this.context, ticks));
+                event.start(new TicksClass(this.context, ticks));
             }
         }
         else if (event.startOffset >= offset) {
-            event.start(new Ticks_TicksClass(this.context, ticks));
+            event.start(new TicksClass(this.context, ticks));
         }
     }
     get startOffset() {
@@ -28935,14 +28935,14 @@ class Part_Part extends ToneEvent_ToneEvent {
      * @param value If a value is passed in, the value of the event at the given time will be set to it.
      */
     at(time, value) {
-        const timeInTicks = new TransportTime_TransportTimeClass(this.context, time).toTicks();
-        const tickTime = new Ticks_TicksClass(this.context, 1).toSeconds();
+        const timeInTicks = new TransportTimeClass(this.context, time).toTicks();
+        const tickTime = new TicksClass(this.context, 1).toSeconds();
         const iterator = this._events.values();
         let result = iterator.next();
         while (!result.done) {
             const event = result.value;
             if (Math.abs(timeInTicks - event.startOffset) < tickTime) {
-                if (TypeCheck_isDefined(value)) {
+                if (isDefined(value)) {
                     event.value = value;
                 }
                 return event;
@@ -28950,7 +28950,7 @@ class Part_Part extends ToneEvent_ToneEvent {
             result = iterator.next();
         }
         // if there was no event at that time, create one
-        if (TypeCheck_isDefined(value)) {
+        if (isDefined(value)) {
             this.add(time, value);
             // return the new event
             return this.at(time);
@@ -28967,12 +28967,12 @@ class Part_Part extends ToneEvent_ToneEvent {
         }
         const ticks = this.toTicks(time);
         let event;
-        if (value instanceof ToneEvent_ToneEvent) {
+        if (value instanceof ToneEvent) {
             event = value;
             event.callback = this._tick.bind(this);
         }
         else {
-            event = new ToneEvent_ToneEvent({
+            event = new ToneEvent({
                 callback: this._tick.bind(this),
                 context: this.context,
                 value,
@@ -29004,7 +29004,7 @@ class Part_Part extends ToneEvent_ToneEvent {
             }
             else {
                 // stop the note
-                event.stop(new Ticks_TicksClass(this.context, stateEvent.time));
+                event.stop(new TicksClass(this.context, stateEvent.time));
             }
         });
     }
@@ -29017,7 +29017,7 @@ class Part_Part extends ToneEvent_ToneEvent {
         time = this.toTicks(time);
         this._events.forEach(event => {
             if (event.startOffset === time) {
-                if (isUndef(value) || (TypeCheck_isDefined(value) && event.value === value)) {
+                if (isUndef(value) || (isDefined(value) && event.value === value)) {
                     this._events.delete(event);
                     event.dispose();
                 }
@@ -29136,7 +29136,7 @@ class Part_Part extends ToneEvent_ToneEvent {
      * loop if Part.loop is true.
      */
     get loopEnd() {
-        return new Ticks_TicksClass(this.context, this._loopEnd).toSeconds();
+        return new TicksClass(this.context, this._loopEnd).toSeconds();
     }
     set loopEnd(loopEnd) {
         this._loopEnd = this.toTicks(loopEnd);
@@ -29152,7 +29152,7 @@ class Part_Part extends ToneEvent_ToneEvent {
      * loop if Part.loop is true.
      */
     get loopStart() {
-        return new Ticks_TicksClass(this.context, this._loopStart).toSeconds();
+        return new TicksClass(this.context, this._loopStart).toSeconds();
     }
     set loopStart(loopStart) {
         this._loopStart = this.toTicks(loopStart);
@@ -34152,7 +34152,7 @@ function loaded() {
 // this fills in name changes from 13.x to 14.x
 
 
-const Buffer = ToneAudioBuffer_ToneAudioBuffer;
+const Buffer = (/* unused pure expression or super */ null && (ToneAudioBuffer));
 const Buffers = (/* unused pure expression or super */ null && (ToneAudioBuffers));
 const BufferSource = (/* unused pure expression or super */ null && (ToneBufferSource));
 //# sourceMappingURL=index.js.map
@@ -35374,1946 +35374,16 @@ var MOD_OscillatorFrequency = /*#__PURE__*/function (_Component) {
 }(react.Component);
 
 
-;// CONCATENATED MODULE: ./src/javascript/modules/MOD_ToneSynthTriggerNote.jsx
-function MOD_ToneSynthTriggerNote_typeof(obj) { "@babel/helpers - typeof"; return MOD_ToneSynthTriggerNote_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, MOD_ToneSynthTriggerNote_typeof(obj); }
+;// CONCATENATED MODULE: ./src/javascript/modules/MOD_OscillatorFrequency_loaded.jsx
 
-function MOD_ToneSynthTriggerNote_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function MOD_ToneSynthTriggerNote_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function MOD_ToneSynthTriggerNote_createClass(Constructor, protoProps, staticProps) { if (protoProps) MOD_ToneSynthTriggerNote_defineProperties(Constructor.prototype, protoProps); if (staticProps) MOD_ToneSynthTriggerNote_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function MOD_ToneSynthTriggerNote_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) MOD_ToneSynthTriggerNote_setPrototypeOf(subClass, superClass); }
-
-function MOD_ToneSynthTriggerNote_setPrototypeOf(o, p) { MOD_ToneSynthTriggerNote_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MOD_ToneSynthTriggerNote_setPrototypeOf(o, p); }
-
-function MOD_ToneSynthTriggerNote_createSuper(Derived) { var hasNativeReflectConstruct = MOD_ToneSynthTriggerNote_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = MOD_ToneSynthTriggerNote_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = MOD_ToneSynthTriggerNote_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return MOD_ToneSynthTriggerNote_possibleConstructorReturn(this, result); }; }
-
-function MOD_ToneSynthTriggerNote_possibleConstructorReturn(self, call) { if (call && (MOD_ToneSynthTriggerNote_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return MOD_ToneSynthTriggerNote_assertThisInitialized(self); }
-
-function MOD_ToneSynthTriggerNote_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function MOD_ToneSynthTriggerNote_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function MOD_ToneSynthTriggerNote_getPrototypeOf(o) { MOD_ToneSynthTriggerNote_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return MOD_ToneSynthTriggerNote_getPrototypeOf(o); }
-
-function MOD_ToneSynthTriggerNote_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-var synth;
-
-var MOD_ToneSynthTriggerNote = /*#__PURE__*/function (_Component) {
-  MOD_ToneSynthTriggerNote_inherits(MOD_ToneSynthTriggerNote, _Component);
-
-  var _super = MOD_ToneSynthTriggerNote_createSuper(MOD_ToneSynthTriggerNote);
-
-  function MOD_ToneSynthTriggerNote(props) {
-    var _this;
-
-    MOD_ToneSynthTriggerNote_classCallCheck(this, MOD_ToneSynthTriggerNote);
-
-    _this = _super.call(this, props);
-
-    MOD_ToneSynthTriggerNote_defineProperty(MOD_ToneSynthTriggerNote_assertThisInitialized(_this), "createSynth", function () {
-      synth = new Synth_Synth().toDestination();
-    });
-
-    MOD_ToneSynthTriggerNote_defineProperty(MOD_ToneSynthTriggerNote_assertThisInitialized(_this), "playNote", function () {
-      synth.triggerAttackRelease('C4', '1');
-    });
-
-    MOD_ToneSynthTriggerNote_defineProperty(MOD_ToneSynthTriggerNote_assertThisInitialized(_this), "handleClick", function () {
-      var created = _this.state.created;
-
-      if (!created) {
-        _this.createSynth();
-
-        created = true;
-      }
-
-      _this.playNote();
-
-      _this.setState({
-        created: created
-      });
-    });
-
-    MOD_ToneSynthTriggerNote_defineProperty(MOD_ToneSynthTriggerNote_assertThisInitialized(_this), "generateCodeExample", function () {
-      // prettier-ignore
-      return "// \u041F\u043E\u0434\u043A\u043B\u044E\u0447\u0430\u0435\u043C \u0431\u0438\u0431\u043B\u0438\u043E\u0442\u0435\u043A\u0443 Tone.js\nimport * as Tone from 'tone'\n\n// \u0421\u043E\u0437\u0434\u0430\u0451\u043C \u0441\u0438\u043D\u0442\u0435\u0437\u0430\u0442\u043E\u0440 \u0438 \u043F\u043E\u0434\u043A\u043B\u044E\u0447\u0430\u0435\u043C \u043A \u043A\u043E\u043B\u043E\u043D\u043A\u0430\u043C\nconst synth = new Tone.Synth().toDestination()\n\n// \u0422\u0440\u0438\u0433\u0435\u0440\u0438\u043C \u0441\u0438\u043D\u0442\u0435\u0437\u0430\u0442\u043E\u0440 \u043F\u0440\u0438 \u043D\u0430\u0436\u0430\u0442\u0438\u0438 \u043D\u0430 \u043A\u043D\u043E\u043F\u043A\u0443 \u043F\u043B\u0435\u0439\n// \u041D\u043E\u0442\u0430 \u0414\u043E \u0447\u0435\u0442\u0432\u0451\u0440\u0442\u043E\u0439 \u043E\u043A\u0442\u0430\u0432\u044B (C4) \u0434\u043B\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u044C\u044E \u0432 \u043E\u0434\u043D\u0443 \u0441\u0435\u043A\u0443\u043D\u0434\u0443 (1)\nsynth.triggerAttackRelease('C4', '1')";
-    });
-
-    _this.state = {
-      created: false
-    };
-    return _this;
-  }
-
-  MOD_ToneSynthTriggerNote_createClass(MOD_ToneSynthTriggerNote, [{
-    key: "render",
-    value: function render() {
-      return /*#__PURE__*/react.createElement("div", {
-        className: "MOD_ToneSynthTriggerNote"
-      }, /*#__PURE__*/react.createElement(M_InstrumentHeaderWithButton, {
-        text: "Tone Synth",
-        isOn: false,
-        handleClick: this.handleClick
-      }), /*#__PURE__*/react.createElement(M_CodeExample, {
-        code: this.generateCodeExample()
-      }));
-    }
-  }]);
-
-  return MOD_ToneSynthTriggerNote;
-}(react.Component);
-
-
-;// CONCATENATED MODULE: ./src/javascript/molecules/M_InstrumentHeader/M_InstrumentHeader.jsx
-function M_InstrumentHeader_typeof(obj) { "@babel/helpers - typeof"; return M_InstrumentHeader_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, M_InstrumentHeader_typeof(obj); }
-
-function M_InstrumentHeader_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function M_InstrumentHeader_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function M_InstrumentHeader_createClass(Constructor, protoProps, staticProps) { if (protoProps) M_InstrumentHeader_defineProperties(Constructor.prototype, protoProps); if (staticProps) M_InstrumentHeader_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function M_InstrumentHeader_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) M_InstrumentHeader_setPrototypeOf(subClass, superClass); }
-
-function M_InstrumentHeader_setPrototypeOf(o, p) { M_InstrumentHeader_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return M_InstrumentHeader_setPrototypeOf(o, p); }
-
-function M_InstrumentHeader_createSuper(Derived) { var hasNativeReflectConstruct = M_InstrumentHeader_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = M_InstrumentHeader_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = M_InstrumentHeader_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return M_InstrumentHeader_possibleConstructorReturn(this, result); }; }
-
-function M_InstrumentHeader_possibleConstructorReturn(self, call) { if (call && (M_InstrumentHeader_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return M_InstrumentHeader_assertThisInitialized(self); }
-
-function M_InstrumentHeader_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function M_InstrumentHeader_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function M_InstrumentHeader_getPrototypeOf(o) { M_InstrumentHeader_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return M_InstrumentHeader_getPrototypeOf(o); }
-
-
-
-
-
-
-var M_InstrumentHeader_M_InstrumentHeaderWithButton = /*#__PURE__*/function (_PureComponent) {
-  M_InstrumentHeader_inherits(M_InstrumentHeaderWithButton, _PureComponent);
-
-  var _super = M_InstrumentHeader_createSuper(M_InstrumentHeaderWithButton);
-
-  function M_InstrumentHeaderWithButton(props) {
-    M_InstrumentHeader_classCallCheck(this, M_InstrumentHeaderWithButton);
-
-    return _super.call(this, props);
-  }
-
-  M_InstrumentHeader_createClass(M_InstrumentHeaderWithButton, [{
-    key: "render",
-    value: function render() {
-      var text = this.props.text;
-      return /*#__PURE__*/react.createElement("div", {
-        className: "M_InstrumentHeader"
-      }, /*#__PURE__*/react.createElement(A_Text, {
-        type: "instrumentHeader",
-        text: text
-      }));
-    }
-  }]);
-
-  return M_InstrumentHeaderWithButton;
-}(react.PureComponent);
-
-
-;// CONCATENATED MODULE: ./src/javascript/atoms/A_Button/A_Button.jsx
-function A_Button_typeof(obj) { "@babel/helpers - typeof"; return A_Button_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, A_Button_typeof(obj); }
-
-function A_Button_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-function A_Button_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function A_Button_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function A_Button_createClass(Constructor, protoProps, staticProps) { if (protoProps) A_Button_defineProperties(Constructor.prototype, protoProps); if (staticProps) A_Button_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function A_Button_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) A_Button_setPrototypeOf(subClass, superClass); }
-
-function A_Button_setPrototypeOf(o, p) { A_Button_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return A_Button_setPrototypeOf(o, p); }
-
-function A_Button_createSuper(Derived) { var hasNativeReflectConstruct = A_Button_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = A_Button_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = A_Button_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return A_Button_possibleConstructorReturn(this, result); }; }
-
-function A_Button_possibleConstructorReturn(self, call) { if (call && (A_Button_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return A_Button_assertThisInitialized(self); }
-
-function A_Button_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function A_Button_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function A_Button_getPrototypeOf(o) { A_Button_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return A_Button_getPrototypeOf(o); }
-
-
-
-
-
-
-var A_Button = /*#__PURE__*/function (_PureComponent) {
-  A_Button_inherits(A_Button, _PureComponent);
-
-  var _super = A_Button_createSuper(A_Button);
-
-  function A_Button(props) {
-    A_Button_classCallCheck(this, A_Button);
-
-    return _super.call(this, props);
-  }
-
-  A_Button_createClass(A_Button, [{
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          type = _this$props.type,
-          text = _this$props.text,
-          handleClick = _this$props.handleClick;
-      var classes = classnames_default()(A_Button_defineProperty({
-        A_Button: true
-      }, "".concat(type), true));
-      return /*#__PURE__*/react.createElement("div", {
-        className: classes,
-        onClick: handleClick
-      }, text);
-    }
-  }]);
-
-  return A_Button;
-}(react.PureComponent);
-
-
-;// CONCATENATED MODULE: ./src/javascript/organisms/O_PianoKeyboard/O_PianoKeyboard.jsx
-function O_PianoKeyboard_typeof(obj) { "@babel/helpers - typeof"; return O_PianoKeyboard_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, O_PianoKeyboard_typeof(obj); }
-
-function O_PianoKeyboard_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function O_PianoKeyboard_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function O_PianoKeyboard_createClass(Constructor, protoProps, staticProps) { if (protoProps) O_PianoKeyboard_defineProperties(Constructor.prototype, protoProps); if (staticProps) O_PianoKeyboard_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function O_PianoKeyboard_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) O_PianoKeyboard_setPrototypeOf(subClass, superClass); }
-
-function O_PianoKeyboard_setPrototypeOf(o, p) { O_PianoKeyboard_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return O_PianoKeyboard_setPrototypeOf(o, p); }
-
-function O_PianoKeyboard_createSuper(Derived) { var hasNativeReflectConstruct = O_PianoKeyboard_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = O_PianoKeyboard_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = O_PianoKeyboard_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return O_PianoKeyboard_possibleConstructorReturn(this, result); }; }
-
-function O_PianoKeyboard_possibleConstructorReturn(self, call) { if (call && (O_PianoKeyboard_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return O_PianoKeyboard_assertThisInitialized(self); }
-
-function O_PianoKeyboard_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function O_PianoKeyboard_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function O_PianoKeyboard_getPrototypeOf(o) { O_PianoKeyboard_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return O_PianoKeyboard_getPrototypeOf(o); }
-
-function O_PianoKeyboard_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-var O_PianoKeyboard = /*#__PURE__*/function (_PureComponent) {
-  O_PianoKeyboard_inherits(O_PianoKeyboard, _PureComponent);
-
-  var _super = O_PianoKeyboard_createSuper(O_PianoKeyboard);
-
-  function O_PianoKeyboard(props) {
-    var _this;
-
-    O_PianoKeyboard_classCallCheck(this, O_PianoKeyboard);
-
-    _this = _super.call(this, props);
-
-    O_PianoKeyboard_defineProperty(O_PianoKeyboard_assertThisInitialized(_this), "handleClick", function (note) {
-      var handleClick = _this.props.handleClick;
-      handleClick(note);
-    });
-
-    O_PianoKeyboard_defineProperty(O_PianoKeyboard_assertThisInitialized(_this), "renderKeys", function (type, notes) {
-      var elements = [];
-      notes.forEach(function (note, i) {
-        elements.push( /*#__PURE__*/react.createElement(A_Button, {
-          type: type,
-          handleClick: function handleClick() {
-            _this.handleClick(note);
-          },
-          key: Math.floor(Math.random() * 10000)
-        }));
-      });
-      return elements;
-    });
-
-    return _this;
-  }
-
-  O_PianoKeyboard_createClass(O_PianoKeyboard, [{
-    key: "render",
-    value: function render() {
-      var blackKeysPart1 = ['C#4', 'D#4'];
-      var blackKeysPart2 = ['F#4', 'G#4', 'A#4'];
-      var whiteKeys = ['C4', 'D4', 'E4', 'F4', 'G4', 'A4', 'B4'];
-      return /*#__PURE__*/react.createElement("div", {
-        className: "O_PianoKeyboard"
-      }, /*#__PURE__*/react.createElement("div", {
-        className: "C_PianoBlackKeys"
-      }, /*#__PURE__*/react.createElement("div", {
-        className: "C_PianoBlackKeysPart"
-      }, this.renderKeys('pianoBlack', blackKeysPart1)), /*#__PURE__*/react.createElement("div", {
-        className: "C_PianoBlackKeysPart"
-      }, this.renderKeys('pianoBlack', blackKeysPart2))), /*#__PURE__*/react.createElement("div", {
-        className: "C_PianoWhiteKeys"
-      }, this.renderKeys('pianoWhite', whiteKeys)));
-    }
-  }]);
-
-  return O_PianoKeyboard;
-}(react.PureComponent);
-
-
-;// CONCATENATED MODULE: ./src/javascript/atoms/A_InstrumentConnectionArrow/A_InstrumentConnectionArrow.jsx
-function A_InstrumentConnectionArrow_typeof(obj) { "@babel/helpers - typeof"; return A_InstrumentConnectionArrow_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, A_InstrumentConnectionArrow_typeof(obj); }
-
-function A_InstrumentConnectionArrow_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function A_InstrumentConnectionArrow_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function A_InstrumentConnectionArrow_createClass(Constructor, protoProps, staticProps) { if (protoProps) A_InstrumentConnectionArrow_defineProperties(Constructor.prototype, protoProps); if (staticProps) A_InstrumentConnectionArrow_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function A_InstrumentConnectionArrow_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) A_InstrumentConnectionArrow_setPrototypeOf(subClass, superClass); }
-
-function A_InstrumentConnectionArrow_setPrototypeOf(o, p) { A_InstrumentConnectionArrow_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return A_InstrumentConnectionArrow_setPrototypeOf(o, p); }
-
-function A_InstrumentConnectionArrow_createSuper(Derived) { var hasNativeReflectConstruct = A_InstrumentConnectionArrow_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = A_InstrumentConnectionArrow_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = A_InstrumentConnectionArrow_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return A_InstrumentConnectionArrow_possibleConstructorReturn(this, result); }; }
-
-function A_InstrumentConnectionArrow_possibleConstructorReturn(self, call) { if (call && (A_InstrumentConnectionArrow_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return A_InstrumentConnectionArrow_assertThisInitialized(self); }
-
-function A_InstrumentConnectionArrow_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function A_InstrumentConnectionArrow_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function A_InstrumentConnectionArrow_getPrototypeOf(o) { A_InstrumentConnectionArrow_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return A_InstrumentConnectionArrow_getPrototypeOf(o); }
-
-
-
-
-
-var A_InstrumentConnectionArrow = /*#__PURE__*/function (_PureComponent) {
-  A_InstrumentConnectionArrow_inherits(A_InstrumentConnectionArrow, _PureComponent);
-
-  var _super = A_InstrumentConnectionArrow_createSuper(A_InstrumentConnectionArrow);
-
-  function A_InstrumentConnectionArrow(props) {
-    A_InstrumentConnectionArrow_classCallCheck(this, A_InstrumentConnectionArrow);
-
-    return _super.call(this, props);
-  }
-
-  A_InstrumentConnectionArrow_createClass(A_InstrumentConnectionArrow, [{
-    key: "render",
-    value: function render() {
-      return /*#__PURE__*/react.createElement("div", {
-        className: "A_InstrumentConnectionArrow"
-      });
-    }
-  }]);
-
-  return A_InstrumentConnectionArrow;
-}(react.PureComponent);
-
-
-;// CONCATENATED MODULE: ./src/javascript/modules/MOD_PianoKeyboardWithSynth.jsx
-function MOD_PianoKeyboardWithSynth_typeof(obj) { "@babel/helpers - typeof"; return MOD_PianoKeyboardWithSynth_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, MOD_PianoKeyboardWithSynth_typeof(obj); }
-
-function MOD_PianoKeyboardWithSynth_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function MOD_PianoKeyboardWithSynth_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function MOD_PianoKeyboardWithSynth_createClass(Constructor, protoProps, staticProps) { if (protoProps) MOD_PianoKeyboardWithSynth_defineProperties(Constructor.prototype, protoProps); if (staticProps) MOD_PianoKeyboardWithSynth_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function MOD_PianoKeyboardWithSynth_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) MOD_PianoKeyboardWithSynth_setPrototypeOf(subClass, superClass); }
-
-function MOD_PianoKeyboardWithSynth_setPrototypeOf(o, p) { MOD_PianoKeyboardWithSynth_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MOD_PianoKeyboardWithSynth_setPrototypeOf(o, p); }
-
-function MOD_PianoKeyboardWithSynth_createSuper(Derived) { var hasNativeReflectConstruct = MOD_PianoKeyboardWithSynth_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = MOD_PianoKeyboardWithSynth_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = MOD_PianoKeyboardWithSynth_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return MOD_PianoKeyboardWithSynth_possibleConstructorReturn(this, result); }; }
-
-function MOD_PianoKeyboardWithSynth_possibleConstructorReturn(self, call) { if (call && (MOD_PianoKeyboardWithSynth_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return MOD_PianoKeyboardWithSynth_assertThisInitialized(self); }
-
-function MOD_PianoKeyboardWithSynth_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function MOD_PianoKeyboardWithSynth_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function MOD_PianoKeyboardWithSynth_getPrototypeOf(o) { MOD_PianoKeyboardWithSynth_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return MOD_PianoKeyboardWithSynth_getPrototypeOf(o); }
-
-function MOD_PianoKeyboardWithSynth_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-
-var MOD_PianoKeyboardWithSynth_synth;
-
-var MOD_PianoKeyboardWithSynth = /*#__PURE__*/function (_Component) {
-  MOD_PianoKeyboardWithSynth_inherits(MOD_PianoKeyboardWithSynth, _Component);
-
-  var _super = MOD_PianoKeyboardWithSynth_createSuper(MOD_PianoKeyboardWithSynth);
-
-  function MOD_PianoKeyboardWithSynth(props) {
-    var _this;
-
-    MOD_PianoKeyboardWithSynth_classCallCheck(this, MOD_PianoKeyboardWithSynth);
-
-    _this = _super.call(this, props);
-
-    MOD_PianoKeyboardWithSynth_defineProperty(MOD_PianoKeyboardWithSynth_assertThisInitialized(_this), "createSynth", function () {
-      MOD_PianoKeyboardWithSynth_synth = new Synth_Synth().toDestination();
-    });
-
-    MOD_PianoKeyboardWithSynth_defineProperty(MOD_PianoKeyboardWithSynth_assertThisInitialized(_this), "playNote", function (note) {
-      MOD_PianoKeyboardWithSynth_synth.triggerAttackRelease(note, '1');
-    });
-
-    MOD_PianoKeyboardWithSynth_defineProperty(MOD_PianoKeyboardWithSynth_assertThisInitialized(_this), "handleClick", function (note) {
-      var created = _this.state.created;
-
-      if (!created) {
-        _this.createSynth();
-
-        created = true;
-      }
-
-      _this.playNote(note);
-
-      _this.setState({
-        created: created
-      });
-    });
-
-    _this.state = {
-      created: false
-    };
-    return _this;
-  }
-
-  MOD_PianoKeyboardWithSynth_createClass(MOD_PianoKeyboardWithSynth, [{
-    key: "render",
-    value: function render() {
-      return /*#__PURE__*/react.createElement("div", {
-        className: "MOD_PianoKeyboardWithSynth"
-      }, /*#__PURE__*/react.createElement(M_InstrumentHeader_M_InstrumentHeaderWithButton, {
-        text: "Piano Keyboard"
-      }), /*#__PURE__*/react.createElement(O_PianoKeyboard, {
-        handleClick: this.handleClick
-      }), /*#__PURE__*/react.createElement(A_InstrumentConnectionArrow, null), /*#__PURE__*/react.createElement(M_InstrumentHeader_M_InstrumentHeaderWithButton, {
-        text: "Tone Synth"
-      }));
-    }
-  }]);
-
-  return MOD_PianoKeyboardWithSynth;
-}(react.Component);
-
-
-;// CONCATENATED MODULE: ./src/javascript/atoms/A_SampleSequencerStep/A_SampleSequencerStep.jsx
-function A_SampleSequencerStep_typeof(obj) { "@babel/helpers - typeof"; return A_SampleSequencerStep_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, A_SampleSequencerStep_typeof(obj); }
-
-function A_SampleSequencerStep_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function A_SampleSequencerStep_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function A_SampleSequencerStep_createClass(Constructor, protoProps, staticProps) { if (protoProps) A_SampleSequencerStep_defineProperties(Constructor.prototype, protoProps); if (staticProps) A_SampleSequencerStep_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function A_SampleSequencerStep_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) A_SampleSequencerStep_setPrototypeOf(subClass, superClass); }
-
-function A_SampleSequencerStep_setPrototypeOf(o, p) { A_SampleSequencerStep_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return A_SampleSequencerStep_setPrototypeOf(o, p); }
-
-function A_SampleSequencerStep_createSuper(Derived) { var hasNativeReflectConstruct = A_SampleSequencerStep_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = A_SampleSequencerStep_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = A_SampleSequencerStep_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return A_SampleSequencerStep_possibleConstructorReturn(this, result); }; }
-
-function A_SampleSequencerStep_possibleConstructorReturn(self, call) { if (call && (A_SampleSequencerStep_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return A_SampleSequencerStep_assertThisInitialized(self); }
-
-function A_SampleSequencerStep_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function A_SampleSequencerStep_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function A_SampleSequencerStep_getPrototypeOf(o) { A_SampleSequencerStep_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return A_SampleSequencerStep_getPrototypeOf(o); }
-
-
-
-
-
-
-var A_SampleSequencerStep = /*#__PURE__*/function (_PureComponent) {
-  A_SampleSequencerStep_inherits(A_SampleSequencerStep, _PureComponent);
-
-  var _super = A_SampleSequencerStep_createSuper(A_SampleSequencerStep);
-
-  function A_SampleSequencerStep(props) {
-    A_SampleSequencerStep_classCallCheck(this, A_SampleSequencerStep);
-
-    return _super.call(this, props);
-  }
-
-  A_SampleSequencerStep_createClass(A_SampleSequencerStep, [{
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          isOn = _this$props.isOn,
-          currentStep = _this$props.currentStep,
-          handleClick = _this$props.handleClick;
-      var classes = classnames_default()({
-        A_SampleSequencerStep: true,
-        isOn: isOn,
-        currentStep: currentStep
-      });
-      return /*#__PURE__*/react.createElement("div", {
-        className: classes,
-        onClick: handleClick
-      });
-    }
-  }]);
-
-  return A_SampleSequencerStep;
-}(react.PureComponent);
-
-
-;// CONCATENATED MODULE: ./src/javascript/molecules/M_SampleSequencerRow/M_SampleSequencerRow.jsx
-function M_SampleSequencerRow_typeof(obj) { "@babel/helpers - typeof"; return M_SampleSequencerRow_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, M_SampleSequencerRow_typeof(obj); }
-
-function M_SampleSequencerRow_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function M_SampleSequencerRow_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function M_SampleSequencerRow_createClass(Constructor, protoProps, staticProps) { if (protoProps) M_SampleSequencerRow_defineProperties(Constructor.prototype, protoProps); if (staticProps) M_SampleSequencerRow_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function M_SampleSequencerRow_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) M_SampleSequencerRow_setPrototypeOf(subClass, superClass); }
-
-function M_SampleSequencerRow_setPrototypeOf(o, p) { M_SampleSequencerRow_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return M_SampleSequencerRow_setPrototypeOf(o, p); }
-
-function M_SampleSequencerRow_createSuper(Derived) { var hasNativeReflectConstruct = M_SampleSequencerRow_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = M_SampleSequencerRow_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = M_SampleSequencerRow_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return M_SampleSequencerRow_possibleConstructorReturn(this, result); }; }
-
-function M_SampleSequencerRow_possibleConstructorReturn(self, call) { if (call && (M_SampleSequencerRow_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return M_SampleSequencerRow_assertThisInitialized(self); }
-
-function M_SampleSequencerRow_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function M_SampleSequencerRow_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function M_SampleSequencerRow_getPrototypeOf(o) { M_SampleSequencerRow_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return M_SampleSequencerRow_getPrototypeOf(o); }
-
-function M_SampleSequencerRow_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-var M_SampleSequencerRow = /*#__PURE__*/function (_PureComponent) {
-  M_SampleSequencerRow_inherits(M_SampleSequencerRow, _PureComponent);
-
-  var _super = M_SampleSequencerRow_createSuper(M_SampleSequencerRow);
-
-  function M_SampleSequencerRow(props) {
-    var _this;
-
-    M_SampleSequencerRow_classCallCheck(this, M_SampleSequencerRow);
-
-    _this = _super.call(this, props);
-
-    M_SampleSequencerRow_defineProperty(M_SampleSequencerRow_assertThisInitialized(_this), "renderSampleSequencerSteps", function () {
-      var _this$props = _this.props,
-          note = _this$props.note,
-          sequence = _this$props.sequence,
-          ticksPlayed = _this$props.ticksPlayed,
-          _handleClick = _this$props.handleClick;
-      var elements = [];
-      16 .times(function (i) {
-        elements.push( /*#__PURE__*/react.createElement(A_SampleSequencerStep, {
-          isOn: sequence.includes(i),
-          currentStep: ticksPlayed === i ? true : false,
-          handleClick: function handleClick() {
-            _handleClick(note, i);
-          },
-          key: i
-        }));
-      });
-      return elements;
-    });
-
-    _this.state = {
-      name: props.name.replaceAll('-', ' ')
-    };
-    return _this;
-  }
-
-  M_SampleSequencerRow_createClass(M_SampleSequencerRow, [{
-    key: "render",
-    value: function render() {
-      var name = this.state.name;
-      return /*#__PURE__*/react.createElement("div", {
-        className: "M_SampleSequencerRow"
-      }, /*#__PURE__*/react.createElement("div", {
-        className: "name"
-      }, name), /*#__PURE__*/react.createElement("div", {
-        className: "W_SampleSequencerRowSteps"
-      }, this.renderSampleSequencerSteps()));
-    }
-  }]);
-
-  return M_SampleSequencerRow;
-}(react.PureComponent);
-
-
-;// CONCATENATED MODULE: ./src/javascript/organisms/O_SampleSequencerGrid/O_SampleSequencerGrid.jsx
-function O_SampleSequencerGrid_typeof(obj) { "@babel/helpers - typeof"; return O_SampleSequencerGrid_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, O_SampleSequencerGrid_typeof(obj); }
-
-function O_SampleSequencerGrid_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function O_SampleSequencerGrid_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function O_SampleSequencerGrid_createClass(Constructor, protoProps, staticProps) { if (protoProps) O_SampleSequencerGrid_defineProperties(Constructor.prototype, protoProps); if (staticProps) O_SampleSequencerGrid_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function O_SampleSequencerGrid_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) O_SampleSequencerGrid_setPrototypeOf(subClass, superClass); }
-
-function O_SampleSequencerGrid_setPrototypeOf(o, p) { O_SampleSequencerGrid_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return O_SampleSequencerGrid_setPrototypeOf(o, p); }
-
-function O_SampleSequencerGrid_createSuper(Derived) { var hasNativeReflectConstruct = O_SampleSequencerGrid_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = O_SampleSequencerGrid_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = O_SampleSequencerGrid_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return O_SampleSequencerGrid_possibleConstructorReturn(this, result); }; }
-
-function O_SampleSequencerGrid_possibleConstructorReturn(self, call) { if (call && (O_SampleSequencerGrid_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return O_SampleSequencerGrid_assertThisInitialized(self); }
-
-function O_SampleSequencerGrid_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function O_SampleSequencerGrid_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function O_SampleSequencerGrid_getPrototypeOf(o) { O_SampleSequencerGrid_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return O_SampleSequencerGrid_getPrototypeOf(o); }
-
-function O_SampleSequencerGrid_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-var O_SampleSequencerGrid = /*#__PURE__*/function (_PureComponent) {
-  O_SampleSequencerGrid_inherits(O_SampleSequencerGrid, _PureComponent);
-
-  var _super = O_SampleSequencerGrid_createSuper(O_SampleSequencerGrid);
-
-  function O_SampleSequencerGrid(props) {
-    var _this;
-
-    O_SampleSequencerGrid_classCallCheck(this, O_SampleSequencerGrid);
-
-    _this = _super.call(this, props);
-
-    O_SampleSequencerGrid_defineProperty(O_SampleSequencerGrid_assertThisInitialized(_this), "renderSampleSequencerRows", function () {
-      var _this$props = _this.props,
-          samples = _this$props.samples,
-          sequence = _this$props.sequence,
-          ticksPlayed = _this$props.ticksPlayed,
-          handleClick = _this$props.handleClick;
-      var elements = [];
-      Object.keys(samples).forEach(function (key, i) {
-        elements.push( /*#__PURE__*/react.createElement(M_SampleSequencerRow, {
-          note: key,
-          name: samples[key],
-          sequence: sequence[key],
-          ticksPlayed: ticksPlayed,
-          handleClick: handleClick,
-          key: i
-        }));
-      });
-      return elements;
-    });
-
-    return _this;
-  }
-
-  O_SampleSequencerGrid_createClass(O_SampleSequencerGrid, [{
-    key: "render",
-    value: function render() {
-      return /*#__PURE__*/react.createElement("div", {
-        className: "O_SampleSequencerGrid"
-      }, this.renderSampleSequencerRows());
-    }
-  }]);
-
-  return O_SampleSequencerGrid;
-}(react.PureComponent);
-
-
-;// CONCATENATED MODULE: ./src/javascript/modules/MOD_SampleSequencer.jsx
-function MOD_SampleSequencer_typeof(obj) { "@babel/helpers - typeof"; return MOD_SampleSequencer_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, MOD_SampleSequencer_typeof(obj); }
-
-function MOD_SampleSequencer_toConsumableArray(arr) { return MOD_SampleSequencer_arrayWithoutHoles(arr) || MOD_SampleSequencer_iterableToArray(arr) || MOD_SampleSequencer_unsupportedIterableToArray(arr) || MOD_SampleSequencer_nonIterableSpread(); }
-
-function MOD_SampleSequencer_nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
-
-function MOD_SampleSequencer_unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return MOD_SampleSequencer_arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return MOD_SampleSequencer_arrayLikeToArray(o, minLen); }
-
-function MOD_SampleSequencer_iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
-
-function MOD_SampleSequencer_arrayWithoutHoles(arr) { if (Array.isArray(arr)) return MOD_SampleSequencer_arrayLikeToArray(arr); }
-
-function MOD_SampleSequencer_arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
-
-function MOD_SampleSequencer_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function MOD_SampleSequencer_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function MOD_SampleSequencer_createClass(Constructor, protoProps, staticProps) { if (protoProps) MOD_SampleSequencer_defineProperties(Constructor.prototype, protoProps); if (staticProps) MOD_SampleSequencer_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function MOD_SampleSequencer_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) MOD_SampleSequencer_setPrototypeOf(subClass, superClass); }
-
-function MOD_SampleSequencer_setPrototypeOf(o, p) { MOD_SampleSequencer_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MOD_SampleSequencer_setPrototypeOf(o, p); }
-
-function MOD_SampleSequencer_createSuper(Derived) { var hasNativeReflectConstruct = MOD_SampleSequencer_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = MOD_SampleSequencer_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = MOD_SampleSequencer_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return MOD_SampleSequencer_possibleConstructorReturn(this, result); }; }
-
-function MOD_SampleSequencer_possibleConstructorReturn(self, call) { if (call && (MOD_SampleSequencer_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return MOD_SampleSequencer_assertThisInitialized(self); }
-
-function MOD_SampleSequencer_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function MOD_SampleSequencer_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function MOD_SampleSequencer_getPrototypeOf(o) { MOD_SampleSequencer_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return MOD_SampleSequencer_getPrototypeOf(o); }
-
-function MOD_SampleSequencer_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-
-
-
-var samples = {
-  A1: 'Linn-9000-Bass-Drum',
-  B1: 'Linn-9000-Kick',
-  C1: 'Linn-9000-Snare',
-  D1: 'Linn-AdrenaLinn-Snare',
-  E1: 'Linn-LinnDrum-Snare',
-  F1: 'Tama-RockStar-Ride',
-  G1: 'Vermona-DRM1-High-Hat-Closed',
-  A2: 'Vermona-DRM1-High-Hat-Open',
-  B2: 'Vermona-DRM1-MK3-Bass-Drum',
-  C2: 'Vermona-DRM1-MK3-High-Hat-Closed',
-  D2: 'Vermona-DRM1-MK3-High-Hat-Open'
-};
-var sampler;
-var part;
-
-var MOD_SampleSequencer = /*#__PURE__*/function (_Component) {
-  MOD_SampleSequencer_inherits(MOD_SampleSequencer, _Component);
-
-  var _super = MOD_SampleSequencer_createSuper(MOD_SampleSequencer);
-
-  function MOD_SampleSequencer(props) {
-    var _this;
-
-    MOD_SampleSequencer_classCallCheck(this, MOD_SampleSequencer);
-
-    _this = _super.call(this, props);
-
-    MOD_SampleSequencer_defineProperty(MOD_SampleSequencer_assertThisInitialized(_this), "setDefaultSequence", function () {
-      var sequence = {};
-      Object.keys(samples).forEach(function (sample, i) {
-        sequence[sample] = [];
-      });
-      return sequence;
-    });
-
-    MOD_SampleSequencer_defineProperty(MOD_SampleSequencer_assertThisInitialized(_this), "buferSamples", function () {
-      Object.keys(samples).forEach(function (note, i) {
-        var sample = new Buffer("/samples/".concat(samples[note], ".mp3"), function () {
-          sample.get();
-        });
-        samples[note] = sample;
-      });
-    });
-
-    MOD_SampleSequencer_defineProperty(MOD_SampleSequencer_assertThisInitialized(_this), "createSampler", function () {
-      return new Promise(function (resolve, reject) {
-        sampler = new Sampler({
-          urls: samples,
-          baseUrl: "http://localhost:8080/" + 'samples/'
-        }).toDestination();
-        resolve();
-      });
-    });
-
-    MOD_SampleSequencer_defineProperty(MOD_SampleSequencer_assertThisInitialized(_this), "createPart", function () {
-      return new Promise(function (resolve, reject) {
-        part = new Part_Part(function (time, note) {
-          sampler.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
-        }, {});
-        part.loopEnd = '2m';
-        part.loop = true;
-        sampler.context.resume();
-        resolve();
-      });
-    });
-
-    MOD_SampleSequencer_defineProperty(MOD_SampleSequencer_assertThisInitialized(_this), "transformToTransportTime", function (step) {
-      // prettier-ignore
-      var eights = ['0:0:0', '0:0:2', '0:1:0', '0:1:2', '0:2:0', '0:2:2', '0:3:0', '0:3:2', '1:0:0', '1:0:2', '1:1:0', '1:1:2', '1:2:0', '1:2:2', '1:3:0', '1:3:2'];
-      return eights[step];
-    });
-
-    MOD_SampleSequencer_defineProperty(MOD_SampleSequencer_assertThisInitialized(_this), "togglePart", function () {
-      var _this$state = _this.state,
-          playing = _this$state.playing,
-          ticksPlayed = _this$state.ticksPlayed;
-
-      if (playing) {
-        esm_Transport.stop();
-
-        _this.updateTicksPlayed('stop');
-
-        return false;
-      } else {
-        esm_Transport.start();
-        esm_Transport.scheduleRepeat(function () {
-          _this.updateTicksPlayed('tick');
-        }, '8n');
-        part.start(0);
-        return true;
-      }
-    });
-
-    MOD_SampleSequencer_defineProperty(MOD_SampleSequencer_assertThisInitialized(_this), "updateTicksPlayed", function (type) {
-      var ticksPlayed = _this.state.ticksPlayed;
-
-      if (type === 'stop') {
-        ticksPlayed = -1;
-      } else {
-        if (ticksPlayed >= 15) {
-          ticksPlayed = 0;
-        } else {
-          ticksPlayed++;
-        }
-      }
-
-      _this.setState({
-        ticksPlayed: ticksPlayed
-      });
-    });
-
-    MOD_SampleSequencer_defineProperty(MOD_SampleSequencer_assertThisInitialized(_this), "updateSamplerPart", function () {
-      var sequence = _this.state.sequence;
-      part.clear();
-      Object.keys(sequence).forEach(function (note, i) {
-        sequence[note].forEach(function (step, i) {
-          part.add({
-            time: _this.transformToTransportTime(step),
-            noteName: note,
-            duration: '8n',
-            velocity: 1
-          });
-        });
-      });
-    });
-
-    MOD_SampleSequencer_defineProperty(MOD_SampleSequencer_assertThisInitialized(_this), "undateSequence", function (note, step) {
-      var sequence = Object.assign({}, _this.state.sequence);
-      Object.keys(sequence).forEach(function (key, i) {
-        if (key === note) {
-          var newSequence = MOD_SampleSequencer_toConsumableArray(sequence[key]);
-
-          if (newSequence.includes(step)) {
-            var index = newSequence.indexOf(step);
-            newSequence.splice(index, 1);
-          } else {
-            newSequence.push(step);
-          }
-
-          sequence[key] = newSequence;
-        }
-      });
-
-      _this.setState({
-        sequence: sequence
-      });
-    });
-
-    MOD_SampleSequencer_defineProperty(MOD_SampleSequencer_assertThisInitialized(_this), "handlePlayClick", function () {
-      var _this$state2 = _this.state,
-          created = _this$state2.created,
-          playing = _this$state2.playing;
-
-      if (created) {
-        playing = _this.togglePart();
-
-        _this.setState({
-          created: created,
-          playing: playing
-        });
-      } else {
-        _this.createSampler().then(_this.createPart).then(function () {
-          playing = _this.togglePart();
-          created = true;
-
-          _this.setState({
-            created: created,
-            playing: playing
-          });
-        });
-      }
-    });
-
-    MOD_SampleSequencer_defineProperty(MOD_SampleSequencer_assertThisInitialized(_this), "handleStepClick", function (note, step) {
-      _this.undateSequence(note, step);
-    });
-
-    MOD_SampleSequencer_defineProperty(MOD_SampleSequencer_assertThisInitialized(_this), "generateSamplerPartCode", function () {
-      var sequence = _this.state.sequence;
-      var stepCounter = 0;
-      var samplerPartCode = [];
-      Object.keys(sequence).forEach(function (note, i) {
-        sequence[note].forEach(function (step, i) {
-          var samplerPartNoteCode = [];
-          samplerPartNoteCode.push('  {'); // prettier-ignore
-
-          samplerPartNoteCode.push("    time: '".concat(_this.transformToTransportTime(step), "',"));
-          samplerPartNoteCode.push("    noteName: '".concat(note, "',"));
-          samplerPartNoteCode.push("    duration: '8n',");
-          samplerPartNoteCode.push('    velocity: 1');
-          samplerPartNoteCode.push('  }');
-          samplerPartCode.push(samplerPartNoteCode.join('\r\n'));
-          stepCounter++;
-        });
-      });
-
-      if (stepCounter > 0) {
-        return samplerPartCode.join(',\r\n');
-      } else {
-        return '  // Здесь пока нет секвенции';
-      }
-    });
-
-    MOD_SampleSequencer_defineProperty(MOD_SampleSequencer_assertThisInitialized(_this), "generateCodeExample", function () {
-      // prettier-ignore
-      return "// \u041F\u043E\u0434\u043A\u043B\u044E\u0447\u0430\u0435\u043C \u0431\u0438\u0431\u043B\u0438\u043E\u0442\u0435\u043A\u0443 Tone.js\nimport * as Tone from 'tone'\n\n// \u0421\u043E\u0437\u0434\u0430\u0451\u043C \u0441\u0435\u043C\u043F\u043B\u0435\u0440 \u0438 \u0434\u043E\u0431\u0430\u0432\u043B\u044F\u0435\u043C \u0432 \u043D\u0435\u0433\u043E \u0441\u0435\u043C\u043F\u043B\u044B,\n// \u043A\u043E\u0442\u043E\u0440\u044B\u0435 \u043B\u0435\u0436\u0430\u0442 \u0432 \u043F\u0430\u043F\u043A\u0435 ./src/samples\nconst sampler = new Tone.Sampler({\n  urls: {\n    A1: 'Linn-9000-Bass-Drum.mp3',\n    B1: 'Linn-9000-Kick.mp3',\n    C1: 'Linn-9000-Snare.mp3',\n    D1: 'Linn-AdrenaLinn-Snare.mp3',\n    E1: 'Linn-LinnDrum-Snare.mp3',\n    F1: 'Tama-RockStar-Ride.mp3',\n    G1: 'Vermona-DRM1-High-Hat-Closed.mp3',\n    A2: 'Vermona-DRM1-High-Hat-Open.mp3',\n    B2: 'Vermona-DRM1-MK3-Bass-Drum.mp3',\n    C2: 'Vermona-DRM1-MK3-High-Hat-Closed.mp3',\n    D2: 'Vermona-DRM1-MK3-High-Hat-Open.mp3'\n  },\n  baseUrl: 'https://hseadc.github.io/ADC-Synth-Tutorial/samples/'\n}).toDestination()\n\n// \u041E\u043F\u0438\u0441\u044B\u0432\u0430\u0435\u043C \u0441\u0435\u043A\u0432\u0435\u043D\u0438\u0446\u0438\u044E \u0432 \u0444\u043E\u0440\u043C\u0430\u0442\u0435 \u043C\u0430\u0441\u0441\u0438\u0432\u0430 \u0438\u0437 \u043E\u0431\u044A\u0435\u043A\u0442\u043E\u0432,\n// \u0432 \u043A\u0430\u0436\u0434\u043E\u043C \u0438\u0445 \u043A\u043E\u0442\u043E\u0440\u044B\u0445 \u043C\u044B \u043C\u043E\u0436\u0435\u043C \u0443\u043A\u0430\u0437\u0430\u0442\u044C \u043D\u043E\u0442\u0443, \u0434\u043B\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u044C,\n// \u0432\u0440\u0435\u043C\u044F, \u043A\u043E\u0433\u0434\u0430 \u0432\u043E\u0441\u043F\u043E\u0438\u0437\u0432\u043E\u0434\u0438\u0442\u044C \u043D\u043E\u0442\u0443, \u0438 \u0433\u0440\u043E\u043C\u043A\u043E\u0441\u0442\u044C\nconst sequence = [\n".concat(_this.generateSamplerPartCode(), "\n]\n\n// \u0421\u043E\u0437\u0434\u0430\u0451\u043C \u043F\u0430\u0440\u0442\u0438\u044E, \u0434\u043E\u0431\u0430\u0432\u043B\u044F\u0435\u043C \u0432 \u043D\u0435\u0451 \u0441\u0435\u043A\u0432\u0435\u043D\u0446\u0438\u044E\n// \u0438 \u0432\u043A\u043B\u044E\u0447\u0430\u0435\u043C \u043F\u0440\u043E\u0438\u0433\u0440\u044B\u0432\u0430\u043D\u0438\u0435\nconst part = new Tone.Part((time, note) => {\n  sampler.triggerAttackRelease(\n    note.noteName,\n    note.duration,\n    time,\n    note.velocity\n  )\n}, sequence).start(0)\n\n// \u0423\u043A\u0430\u0437\u044B\u0432\u0430\u0435\u043C \u0434\u043B\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u044C \u043F\u0430\u0440\u0442\u0438\u0438\npart.loopEnd = '2m'\n\n// \u0412\u043A\u043B\u044E\u0447\u0430\u0435\u043C \u0437\u0430\u0446\u0438\u043A\u043B\u0438\u0432\u0430\u043D\u0438\u0435\npart.loop = true\n\n// \u0412\u043A\u043B\u044E\u0447\u0430\u0435\u043C \u0437\u0432\u0443\u043A \u0432 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0435\nsampler.context.resume()\n\n// \u0412\u043A\u043B\u044E\u0447\u0430\u0435\u043C \u043E\u0442\u0441\u0447\u0451\u0442 \u0432\u0440\u0435\u043C\u0435\u043D\u0438 \u0432 Tone.js\nTone.Transport.start()\n");
-    });
-
-    _this.state = {
-      created: false,
-      playing: false,
-      ticksPlayed: -1,
-      sequence: _this.setDefaultSequence()
-    };
-    return _this;
-  }
-
-  MOD_SampleSequencer_createClass(MOD_SampleSequencer, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      this.buferSamples();
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this$state3 = this.state,
-          created = _this$state3.created,
-          playing = _this$state3.playing,
-          ticksPlayed = _this$state3.ticksPlayed,
-          sequence = _this$state3.sequence;
-      {
-        created ? this.updateSamplerPart() : '';
-      }
-      return /*#__PURE__*/react.createElement("div", {
-        className: "MOD_SampleSequencer"
-      }, /*#__PURE__*/react.createElement(M_InstrumentHeaderWithButton, {
-        text: "Sample Sequencer",
-        isOn: playing,
-        handleClick: this.handlePlayClick
-      }), /*#__PURE__*/react.createElement(O_SampleSequencerGrid, {
-        samples: samples,
-        sequence: sequence,
-        ticksPlayed: playing ? ticksPlayed : '',
-        handleClick: this.handleStepClick
-      }), /*#__PURE__*/react.createElement(A_InstrumentConnectionArrow, null), /*#__PURE__*/react.createElement(M_InstrumentHeader_M_InstrumentHeaderWithButton, {
-        text: "Sampler"
-      }), /*#__PURE__*/react.createElement(M_CodeExample, {
-        code: this.generateCodeExample()
-      }));
-    }
-  }]);
-
-  return MOD_SampleSequencer;
-}(react.Component);
-
-
-;// CONCATENATED MODULE: ./src/javascript/molecules/M_NoteSequencerPianoKeyboard/M_NoteSequencerPianoKeyboard.jsx
-function M_NoteSequencerPianoKeyboard_typeof(obj) { "@babel/helpers - typeof"; return M_NoteSequencerPianoKeyboard_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, M_NoteSequencerPianoKeyboard_typeof(obj); }
-
-function M_NoteSequencerPianoKeyboard_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function M_NoteSequencerPianoKeyboard_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function M_NoteSequencerPianoKeyboard_createClass(Constructor, protoProps, staticProps) { if (protoProps) M_NoteSequencerPianoKeyboard_defineProperties(Constructor.prototype, protoProps); if (staticProps) M_NoteSequencerPianoKeyboard_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function M_NoteSequencerPianoKeyboard_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) M_NoteSequencerPianoKeyboard_setPrototypeOf(subClass, superClass); }
-
-function M_NoteSequencerPianoKeyboard_setPrototypeOf(o, p) { M_NoteSequencerPianoKeyboard_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return M_NoteSequencerPianoKeyboard_setPrototypeOf(o, p); }
-
-function M_NoteSequencerPianoKeyboard_createSuper(Derived) { var hasNativeReflectConstruct = M_NoteSequencerPianoKeyboard_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = M_NoteSequencerPianoKeyboard_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = M_NoteSequencerPianoKeyboard_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return M_NoteSequencerPianoKeyboard_possibleConstructorReturn(this, result); }; }
-
-function M_NoteSequencerPianoKeyboard_possibleConstructorReturn(self, call) { if (call && (M_NoteSequencerPianoKeyboard_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return M_NoteSequencerPianoKeyboard_assertThisInitialized(self); }
-
-function M_NoteSequencerPianoKeyboard_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function M_NoteSequencerPianoKeyboard_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function M_NoteSequencerPianoKeyboard_getPrototypeOf(o) { M_NoteSequencerPianoKeyboard_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return M_NoteSequencerPianoKeyboard_getPrototypeOf(o); }
-
-function M_NoteSequencerPianoKeyboard_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-var M_NoteSequencerPianoKeyboard = /*#__PURE__*/function (_PureComponent) {
-  M_NoteSequencerPianoKeyboard_inherits(M_NoteSequencerPianoKeyboard, _PureComponent);
-
-  var _super = M_NoteSequencerPianoKeyboard_createSuper(M_NoteSequencerPianoKeyboard);
-
-  function M_NoteSequencerPianoKeyboard(props) {
-    var _this;
-
-    M_NoteSequencerPianoKeyboard_classCallCheck(this, M_NoteSequencerPianoKeyboard);
-
-    _this = _super.call(this, props);
-
-    M_NoteSequencerPianoKeyboard_defineProperty(M_NoteSequencerPianoKeyboard_assertThisInitialized(_this), "renderKeys", function (type, notes) {
-      var _this$props = _this.props,
-          octave = _this$props.octave,
-          handleNoteClick = _this$props.handleNoteClick;
-      var elements = [];
-      notes.reverse().forEach(function (note, i) {
-        elements.push( /*#__PURE__*/react.createElement(A_Button, {
-          type: type,
-          handleClick: function handleClick() {
-            handleNoteClick([note, octave].join(''));
-          },
-          key: [note, octave].join('')
-        }));
-      });
-      return elements;
-    });
-
-    return _this;
-  }
-
-  M_NoteSequencerPianoKeyboard_createClass(M_NoteSequencerPianoKeyboard, [{
-    key: "render",
-    value: function render() {
-      // prettier-ignore
-      var pianoKeys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-      return /*#__PURE__*/react.createElement("div", {
-        className: "M_NoteSequencerPianoKeyboard"
-      }, this.renderKeys('pianoKey', pianoKeys));
-    }
-  }]);
-
-  return M_NoteSequencerPianoKeyboard;
-}(react.PureComponent);
-
-
-;// CONCATENATED MODULE: ./src/javascript/atoms/A_NoteSequencerStep/A_NoteSequencerStep.jsx
-function A_NoteSequencerStep_typeof(obj) { "@babel/helpers - typeof"; return A_NoteSequencerStep_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, A_NoteSequencerStep_typeof(obj); }
-
-function A_NoteSequencerStep_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function A_NoteSequencerStep_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function A_NoteSequencerStep_createClass(Constructor, protoProps, staticProps) { if (protoProps) A_NoteSequencerStep_defineProperties(Constructor.prototype, protoProps); if (staticProps) A_NoteSequencerStep_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function A_NoteSequencerStep_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) A_NoteSequencerStep_setPrototypeOf(subClass, superClass); }
-
-function A_NoteSequencerStep_setPrototypeOf(o, p) { A_NoteSequencerStep_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return A_NoteSequencerStep_setPrototypeOf(o, p); }
-
-function A_NoteSequencerStep_createSuper(Derived) { var hasNativeReflectConstruct = A_NoteSequencerStep_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = A_NoteSequencerStep_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = A_NoteSequencerStep_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return A_NoteSequencerStep_possibleConstructorReturn(this, result); }; }
-
-function A_NoteSequencerStep_possibleConstructorReturn(self, call) { if (call && (A_NoteSequencerStep_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return A_NoteSequencerStep_assertThisInitialized(self); }
-
-function A_NoteSequencerStep_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function A_NoteSequencerStep_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function A_NoteSequencerStep_getPrototypeOf(o) { A_NoteSequencerStep_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return A_NoteSequencerStep_getPrototypeOf(o); }
-
-
-
-
-
-
-var A_NoteSequencerStep = /*#__PURE__*/function (_PureComponent) {
-  A_NoteSequencerStep_inherits(A_NoteSequencerStep, _PureComponent);
-
-  var _super = A_NoteSequencerStep_createSuper(A_NoteSequencerStep);
-
-  function A_NoteSequencerStep(props) {
-    A_NoteSequencerStep_classCallCheck(this, A_NoteSequencerStep);
-
-    return _super.call(this, props);
-  }
-
-  A_NoteSequencerStep_createClass(A_NoteSequencerStep, [{
-    key: "render",
-    value: function render() {
-      var _this$props = this.props,
-          isOn = _this$props.isOn,
-          currentStep = _this$props.currentStep,
-          handleClick = _this$props.handleClick,
-          handleMouseDown = _this$props.handleMouseDown,
-          handleMouseMove = _this$props.handleMouseMove,
-          handleMouseUp = _this$props.handleMouseUp;
-      var classes = classnames_default()({
-        A_NoteSequencerStep: true,
-        currentStep: currentStep
-      });
-      return /*#__PURE__*/react.createElement("div", {
-        className: classes,
-        onClick: handleClick,
-        onMouseDown: handleMouseDown,
-        onMouseMove: handleMouseMove,
-        onMouseUp: handleMouseUp
-      });
-    }
-  }]);
-
-  return A_NoteSequencerStep;
-}(react.PureComponent);
-
-
-;// CONCATENATED MODULE: ./src/javascript/atoms/A_NoteSequenceStep/A_NoteSequenceStep.jsx
-function A_NoteSequenceStep_typeof(obj) { "@babel/helpers - typeof"; return A_NoteSequenceStep_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, A_NoteSequenceStep_typeof(obj); }
-
-function A_NoteSequenceStep_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function A_NoteSequenceStep_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function A_NoteSequenceStep_createClass(Constructor, protoProps, staticProps) { if (protoProps) A_NoteSequenceStep_defineProperties(Constructor.prototype, protoProps); if (staticProps) A_NoteSequenceStep_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function A_NoteSequenceStep_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) A_NoteSequenceStep_setPrototypeOf(subClass, superClass); }
-
-function A_NoteSequenceStep_setPrototypeOf(o, p) { A_NoteSequenceStep_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return A_NoteSequenceStep_setPrototypeOf(o, p); }
-
-function A_NoteSequenceStep_createSuper(Derived) { var hasNativeReflectConstruct = A_NoteSequenceStep_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = A_NoteSequenceStep_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = A_NoteSequenceStep_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return A_NoteSequenceStep_possibleConstructorReturn(this, result); }; }
-
-function A_NoteSequenceStep_possibleConstructorReturn(self, call) { if (call && (A_NoteSequenceStep_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return A_NoteSequenceStep_assertThisInitialized(self); }
-
-function A_NoteSequenceStep_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function A_NoteSequenceStep_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function A_NoteSequenceStep_getPrototypeOf(o) { A_NoteSequenceStep_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return A_NoteSequenceStep_getPrototypeOf(o); }
-
-function A_NoteSequenceStep_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-var A_NoteSequenceStep = /*#__PURE__*/function (_Component) {
-  A_NoteSequenceStep_inherits(A_NoteSequenceStep, _Component);
-
-  var _super = A_NoteSequenceStep_createSuper(A_NoteSequenceStep);
-
-  function A_NoteSequenceStep(props) {
-    var _this;
-
-    A_NoteSequenceStep_classCallCheck(this, A_NoteSequenceStep);
-
-    _this = _super.call(this, props);
-
-    A_NoteSequenceStep_defineProperty(A_NoteSequenceStep_assertThisInitialized(_this), "handleClick", function () {
-      var _this$props = _this.props,
-          id = _this$props.id,
-          handleClick = _this$props.handleClick;
-      handleClick(id);
-    });
-
-    return _this;
-  }
-
-  A_NoteSequenceStep_createClass(A_NoteSequenceStep, [{
-    key: "render",
-    value: function render() {
-      var _this$props2 = this.props,
-          sequenceStep = _this$props2.sequenceStep,
-          stepWidth = _this$props2.stepWidth;
-      var step = sequenceStep.step,
-          duration = sequenceStep.duration,
-          temporary = sequenceStep.temporary;
-      var left = step * stepWidth + step * 2;
-      var noteWidth = stepWidth;
-
-      if (duration > 1) {
-        noteWidth = duration * stepWidth + (duration - 1) * 2;
-      }
-
-      var classes = classnames_default()({
-        A_NoteSequenceStep: true,
-        temporary: temporary
-      });
-      var style = {
-        left: [left, 'px'].join(''),
-        width: [noteWidth, 'px'].join('')
-      };
-      return /*#__PURE__*/react.createElement("div", {
-        className: classes,
-        style: style,
-        onClick: this.handleClick
-      });
-    }
-  }]);
-
-  return A_NoteSequenceStep;
-}(react.Component);
-
-
-;// CONCATENATED MODULE: ./src/javascript/molecules/M_NoteSequencerRow/M_NoteSequencerRow.jsx
-function M_NoteSequencerRow_typeof(obj) { "@babel/helpers - typeof"; return M_NoteSequencerRow_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, M_NoteSequencerRow_typeof(obj); }
-
-function M_NoteSequencerRow_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function M_NoteSequencerRow_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function M_NoteSequencerRow_createClass(Constructor, protoProps, staticProps) { if (protoProps) M_NoteSequencerRow_defineProperties(Constructor.prototype, protoProps); if (staticProps) M_NoteSequencerRow_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function M_NoteSequencerRow_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) M_NoteSequencerRow_setPrototypeOf(subClass, superClass); }
-
-function M_NoteSequencerRow_setPrototypeOf(o, p) { M_NoteSequencerRow_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return M_NoteSequencerRow_setPrototypeOf(o, p); }
-
-function M_NoteSequencerRow_createSuper(Derived) { var hasNativeReflectConstruct = M_NoteSequencerRow_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = M_NoteSequencerRow_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = M_NoteSequencerRow_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return M_NoteSequencerRow_possibleConstructorReturn(this, result); }; }
-
-function M_NoteSequencerRow_possibleConstructorReturn(self, call) { if (call && (M_NoteSequencerRow_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return M_NoteSequencerRow_assertThisInitialized(self); }
-
-function M_NoteSequencerRow_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function M_NoteSequencerRow_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function M_NoteSequencerRow_getPrototypeOf(o) { M_NoteSequencerRow_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return M_NoteSequencerRow_getPrototypeOf(o); }
-
-function M_NoteSequencerRow_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-
-var M_NoteSequencerRow = /*#__PURE__*/function (_Component) {
-  M_NoteSequencerRow_inherits(M_NoteSequencerRow, _Component);
-
-  var _super = M_NoteSequencerRow_createSuper(M_NoteSequencerRow);
-
-  function M_NoteSequencerRow(props) {
-    var _this;
-
-    M_NoteSequencerRow_classCallCheck(this, M_NoteSequencerRow);
-
-    _this = _super.call(this, props);
-
-    M_NoteSequencerRow_defineProperty(M_NoteSequencerRow_assertThisInitialized(_this), "renderNoteSequencerSteps", function () {
-      var _this$props = _this.props,
-          octave = _this$props.octave,
-          note = _this$props.note,
-          ticksPlayed = _this$props.ticksPlayed,
-          loopDuration = _this$props.loopDuration,
-          stepDuration = _this$props.stepDuration,
-          handleStepClick = _this$props.handleStepClick,
-          handleStepMouseDown = _this$props.handleStepMouseDown,
-          handleStepMouseMove = _this$props.handleStepMouseMove,
-          handleStepMouseUp = _this$props.handleStepMouseUp;
-      var elements = [];
-      (loopDuration * stepDuration).times(function (i) {
-        var args = [octave, note, i];
-        elements.push( /*#__PURE__*/react.createElement(A_NoteSequencerStep, {
-          currentStep: ticksPlayed === i ? true : false,
-          handleClick: function handleClick() {
-            handleStepClick.apply(void 0, args);
-          },
-          handleMouseDown: function handleMouseDown() {
-            handleStepMouseDown.apply(void 0, args);
-          },
-          handleMouseMove: function handleMouseMove() {
-            handleStepMouseMove.apply(void 0, args);
-          },
-          handleMouseUp: function handleMouseUp() {
-            handleStepMouseUp.apply(void 0, args);
-          },
-          key: i
-        }));
-      });
-      return elements;
-    });
-
-    M_NoteSequencerRow_defineProperty(M_NoteSequencerRow_assertThisInitialized(_this), "renderNoteSequenceSteps", function () {
-      var _this$props2 = _this.props,
-          octave = _this$props2.octave,
-          note = _this$props2.note,
-          ticksPlayed = _this$props2.ticksPlayed,
-          loopDuration = _this$props2.loopDuration,
-          stepDuration = _this$props2.stepDuration,
-          sequence = _this$props2.sequence,
-          stepWidth = _this$props2.stepWidth,
-          handleSequenceStepClick = _this$props2.handleSequenceStepClick;
-      var elements = [];
-      Object.keys(sequence).forEach(function (key, i) {
-        if (sequence[key].octave === octave && sequence[key].note === note) {
-          elements.push( /*#__PURE__*/react.createElement(A_NoteSequenceStep, {
-            id: key,
-            sequenceStep: sequence[key],
-            stepWidth: stepWidth,
-            handleClick: handleSequenceStepClick,
-            key: i
-          }));
-        }
-      });
-      return elements;
-    });
-
-    return _this;
-  }
-
-  M_NoteSequencerRow_createClass(M_NoteSequencerRow, [{
-    key: "render",
-    value: function render() {
-      var _this$props3 = this.props,
-          octave = _this$props3.octave,
-          note = _this$props3.note,
-          sequence = _this$props3.sequence;
-      return /*#__PURE__*/react.createElement("div", {
-        className: "M_NoteSequencerRow"
-      }, /*#__PURE__*/react.createElement("div", {
-        className: "C_NoteSequencerSteps"
-      }, this.renderNoteSequencerSteps()), /*#__PURE__*/react.createElement("div", {
-        className: "C_NoteSequenceSteps"
-      }, this.renderNoteSequenceSteps()));
-    }
-  }]);
-
-  return M_NoteSequencerRow;
-}(react.Component);
-
-
-;// CONCATENATED MODULE: ./src/javascript/organisms/O_NoteSequencer/O_NoteSequencer.jsx
-function O_NoteSequencer_typeof(obj) { "@babel/helpers - typeof"; return O_NoteSequencer_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, O_NoteSequencer_typeof(obj); }
-
-function O_NoteSequencer_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function O_NoteSequencer_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function O_NoteSequencer_createClass(Constructor, protoProps, staticProps) { if (protoProps) O_NoteSequencer_defineProperties(Constructor.prototype, protoProps); if (staticProps) O_NoteSequencer_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function O_NoteSequencer_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) O_NoteSequencer_setPrototypeOf(subClass, superClass); }
-
-function O_NoteSequencer_setPrototypeOf(o, p) { O_NoteSequencer_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return O_NoteSequencer_setPrototypeOf(o, p); }
-
-function O_NoteSequencer_createSuper(Derived) { var hasNativeReflectConstruct = O_NoteSequencer_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = O_NoteSequencer_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = O_NoteSequencer_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return O_NoteSequencer_possibleConstructorReturn(this, result); }; }
-
-function O_NoteSequencer_possibleConstructorReturn(self, call) { if (call && (O_NoteSequencer_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return O_NoteSequencer_assertThisInitialized(self); }
-
-function O_NoteSequencer_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function O_NoteSequencer_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function O_NoteSequencer_getPrototypeOf(o) { O_NoteSequencer_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return O_NoteSequencer_getPrototypeOf(o); }
-
-function O_NoteSequencer_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-
-var O_NoteSequencer = /*#__PURE__*/function (_Component) {
-  O_NoteSequencer_inherits(O_NoteSequencer, _Component);
-
-  var _super = O_NoteSequencer_createSuper(O_NoteSequencer);
-
-  function O_NoteSequencer(props) {
-    var _this;
-
-    O_NoteSequencer_classCallCheck(this, O_NoteSequencer);
-
-    _this = _super.call(this, props);
-
-    O_NoteSequencer_defineProperty(O_NoteSequencer_assertThisInitialized(_this), "renderNoteSequencerPianoKeyboards", function () {
-      var _this$props = _this.props,
-          octaves = _this$props.octaves,
-          handleNoteClick = _this$props.handleNoteClick;
-      var elements = [];
-      octaves.times(function (i) {
-        elements.push( /*#__PURE__*/react.createElement(M_NoteSequencerPianoKeyboard, {
-          octave: i,
-          handleNoteClick: handleNoteClick,
-          key: ['octave', i].join('')
-        }));
-      });
-      return elements.reverse();
-    });
-
-    O_NoteSequencer_defineProperty(O_NoteSequencer_assertThisInitialized(_this), "renderNoteSequencerOctaveGrid", function () {
-      var _this$props2 = _this.props,
-          octaves = _this$props2.octaves,
-          ticksPlayed = _this$props2.ticksPlayed,
-          loopDuration = _this$props2.loopDuration,
-          stepDuration = _this$props2.stepDuration,
-          sequence = _this$props2.sequence,
-          stepWidth = _this$props2.stepWidth,
-          handleStepClick = _this$props2.handleStepClick,
-          handleStepMouseDown = _this$props2.handleStepMouseDown,
-          handleStepMouseMove = _this$props2.handleStepMouseMove,
-          handleStepMouseUp = _this$props2.handleStepMouseUp,
-          handleSequenceStepClick = _this$props2.handleSequenceStepClick;
-      var octaveGrid = [];
-      octaves.times(function (octave) {
-        // prettier-ignore
-        var pianoKeys = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-        var noteSequencerRows = [];
-        pianoKeys.reverse().forEach(function (pianoKey, i) {
-          noteSequencerRows.push( /*#__PURE__*/react.createElement(M_NoteSequencerRow, {
-            octave: octave,
-            note: pianoKey,
-            ticksPlayed: ticksPlayed,
-            loopDuration: loopDuration,
-            stepDuration: stepDuration,
-            sequence: sequence,
-            stepWidth: stepWidth,
-            handleStepClick: handleStepClick,
-            handleStepMouseDown: handleStepMouseDown,
-            handleStepMouseMove: handleStepMouseMove,
-            handleStepMouseUp: handleStepMouseUp,
-            handleSequenceStepClick: handleSequenceStepClick,
-            key: [pianoKey, octave].join('')
-          }));
-        });
-        octaveGrid.push( /*#__PURE__*/react.createElement("div", {
-          className: "C_NoteSequencerOctaveGrid",
-          key: octave
-        }, noteSequencerRows));
-      });
-      return octaveGrid.reverse();
-    });
-
-    return _this;
-  }
-
-  O_NoteSequencer_createClass(O_NoteSequencer, [{
-    key: "render",
-    value: function render() {
-      return /*#__PURE__*/react.createElement("div", {
-        className: "O_NoteSequencer"
-      }, /*#__PURE__*/react.createElement("div", {
-        className: "W_NoteSequencerScroller"
-      }, /*#__PURE__*/react.createElement("div", {
-        className: "C_NoteSequencerPianoKeyboards"
-      }, this.renderNoteSequencerPianoKeyboards()), /*#__PURE__*/react.createElement("div", {
-        className: "C_NoteSequencerGrid"
-      }, this.renderNoteSequencerOctaveGrid())));
-    }
-  }]);
-
-  return O_NoteSequencer;
-}(react.Component);
-
-
-;// CONCATENATED MODULE: ./src/javascript/modules/MOD_MelodySequencer.jsx
-function MOD_MelodySequencer_typeof(obj) { "@babel/helpers - typeof"; return MOD_MelodySequencer_typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, MOD_MelodySequencer_typeof(obj); }
-
-function MOD_MelodySequencer_classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function MOD_MelodySequencer_defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
-
-function MOD_MelodySequencer_createClass(Constructor, protoProps, staticProps) { if (protoProps) MOD_MelodySequencer_defineProperties(Constructor.prototype, protoProps); if (staticProps) MOD_MelodySequencer_defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
-
-function MOD_MelodySequencer_inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) MOD_MelodySequencer_setPrototypeOf(subClass, superClass); }
-
-function MOD_MelodySequencer_setPrototypeOf(o, p) { MOD_MelodySequencer_setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return MOD_MelodySequencer_setPrototypeOf(o, p); }
-
-function MOD_MelodySequencer_createSuper(Derived) { var hasNativeReflectConstruct = MOD_MelodySequencer_isNativeReflectConstruct(); return function _createSuperInternal() { var Super = MOD_MelodySequencer_getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = MOD_MelodySequencer_getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return MOD_MelodySequencer_possibleConstructorReturn(this, result); }; }
-
-function MOD_MelodySequencer_possibleConstructorReturn(self, call) { if (call && (MOD_MelodySequencer_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return MOD_MelodySequencer_assertThisInitialized(self); }
-
-function MOD_MelodySequencer_assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
-
-function MOD_MelodySequencer_isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
-
-function MOD_MelodySequencer_getPrototypeOf(o) { MOD_MelodySequencer_getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return MOD_MelodySequencer_getPrototypeOf(o); }
-
-function MOD_MelodySequencer_defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
-
-
-
-
-
-
-
-
-
-var melodySynth;
-var melodyPart;
-
-var MOD_MelodySequencer = /*#__PURE__*/function (_Component) {
-  MOD_MelodySequencer_inherits(MOD_MelodySequencer, _Component);
-
-  var _super = MOD_MelodySequencer_createSuper(MOD_MelodySequencer);
-
-  function MOD_MelodySequencer(props) {
-    var _this;
-
-    MOD_MelodySequencer_classCallCheck(this, MOD_MelodySequencer);
-
-    _this = _super.call(this, props);
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "isEven", function (n) {
-      return n % 2 == 0;
-    });
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "createSynth", function () {
-      return new Promise(function (resolve, reject) {
-        melodySynth = new Synth_Synth().toDestination();
-        resolve();
-      });
-    });
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "createPart", function () {
-      var loopDuration = _this.state.loopDuration;
-      return new Promise(function (resolve, reject) {
-        melodyPart = new Part_Part(function (time, note) {
-          melodySynth.triggerAttackRelease(note.noteName, note.duration, time, note.velocity);
-        }, {});
-        melodyPart.loopEnd = [loopDuration, 'm'].join('');
-        melodyPart.loop = true;
-        melodySynth.context.resume();
-        resolve();
-      });
-    });
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "transformToTransportTime", function (step) {
-      var _this$state = _this.state,
-          loopDuration = _this$state.loopDuration,
-          stepDuration = _this$state.stepDuration;
-      var transportTime;
-      var bars = 0;
-      var quarters = 0;
-      var sixteenth = 0;
-
-      if (loopDuration === 1) {
-        if (stepDuration === 1) {} else if (stepDuration === 4) {
-          transportTime = "0:".concat(step, ":0");
-        } else if (stepDuration === 8) {
-          var _quarters = Math.floor(step / 2);
-
-          var _sixteenth = _this.isEven(step + 1) ? 2 : 0;
-
-          transportTime = "0:".concat(_quarters, ":").concat(_sixteenth);
-        } else if (stepDuration === 16) {
-          var _quarters2 = Math.floor(step / 4);
-
-          var _sixteenth2 = _quarters2 === 0 ? step : step - _quarters2 * 4;
-
-          transportTime = "0:".concat(_quarters2, ":").concat(_sixteenth2);
-        }
-      } else {
-        bars = Math.floor(step / stepDuration);
-        var stepInMeasure = step >= stepDuration ? step - (loopDuration - 1) * stepDuration : step;
-
-        if (stepDuration === 1) {} else if (stepDuration === 4) {
-          transportTime = "".concat(bars, ":").concat(stepInMeasure, ":0");
-        } else if (stepDuration === 8) {
-          var _quarters3 = Math.floor(stepInMeasure / 2);
-
-          var _sixteenth3 = _this.isEven(stepInMeasure + 1) ? 2 : 0;
-
-          transportTime = "".concat(bars, ":").concat(_quarters3, ":").concat(_sixteenth3);
-        } else if (stepDuration === 16) {
-          var _quarters4 = Math.floor(stepInMeasure / 4);
-
-          var _sixteenth4 = _quarters4 === 0 ? stepInMeasure : stepInMeasure - _quarters4 * 4;
-
-          transportTime = "".concat(bars, ":").concat(_quarters4, ":").concat(_sixteenth4);
-        }
-      }
-
-      return transportTime;
-    });
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "transformToDuration", function (duration) {
-      var _this$state2 = _this.state,
-          loopDuration = _this$state2.loopDuration,
-          stepDuration = _this$state2.stepDuration;
-      var noteDuration;
-
-      if (loopDuration === 1) {
-        noteDuration = "".concat(Math.ceil(stepDuration / duration), "n");
-      } else {
-        noteDuration = "".concat(Math.ceil(stepDuration / duration), "n");
-      }
-
-      return noteDuration;
-    });
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "updatePart", function () {
-      var sequence = _this.state.sequence;
-      melodyPart.clear();
-      var s = [];
-      Object.keys(sequence).forEach(function (id, i) {
-        var _sequence$id = sequence[id],
-            octave = _sequence$id.octave,
-            note = _sequence$id.note,
-            step = _sequence$id.step,
-            duration = _sequence$id.duration,
-            temporary = _sequence$id.temporary;
-        melodyPart.add({
-          time: _this.transformToTransportTime(step),
-          noteName: [note, octave].join(''),
-          duration: _this.transformToDuration(duration),
-          velocity: 1
-        }); // s.push({
-        //   time: this.transformToTransportTime(step),
-        //   noteName: [note, octave].join(''),
-        //   duration: this.transformToDuration(duration),
-        //   velocity: 1
-        // })
-      });
-      console.log(s);
-    });
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "togglePart", function () {
-      var _this$state3 = _this.state,
-          playing = _this$state3.playing,
-          ticksPlayed = _this$state3.ticksPlayed,
-          stepDuration = _this$state3.stepDuration;
-
-      if (playing) {
-        esm_Transport.stop();
-
-        _this.updateTicksPlayed('stop');
-
-        return false;
-      } else {
-        esm_Transport.start();
-        esm_Transport.scheduleRepeat(function () {
-          _this.updateTicksPlayed('tick');
-
-          console.log('tick');
-        }, [stepDuration, 'n'].join(''));
-        melodyPart.start(0);
-        return true;
-      }
-    });
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "updateTicksPlayed", function (type) {
-      var _this$state4 = _this.state,
-          loopDuration = _this$state4.loopDuration,
-          stepDuration = _this$state4.stepDuration;
-      var ticksPlayed = _this.state.ticksPlayed;
-
-      if (type === 'stop') {
-        ticksPlayed = -1;
-      } else {
-        if (ticksPlayed >= loopDuration * stepDuration - 1) {
-          ticksPlayed = 0;
-        } else {
-          ticksPlayed++;
-        }
-      }
-
-      _this.setState({
-        ticksPlayed: ticksPlayed
-      });
-    });
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "handlePlayClick", function () {
-      var _this$state5 = _this.state,
-          created = _this$state5.created,
-          playing = _this$state5.playing;
-
-      if (created) {
-        playing = _this.togglePart();
-
-        _this.setState({
-          created: created,
-          playing: playing
-        });
-      } else {
-        _this.createSynth().then(_this.createPart).then(function () {
-          playing = _this.togglePart();
-          created = true;
-
-          _this.setState({
-            created: created,
-            playing: playing
-          });
-        });
-      }
-    });
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "handleNoteClick", function (note) {
-      var created = _this.state.created;
-
-      if (created) {
-        melodySynth.triggerAttackRelease(note, 0.3);
-      } else {
-        _this.createSynth().then(_this.createPart).then(function () {
-          created = true;
-
-          _this.setState({
-            created: created
-          });
-
-          melodySynth.triggerAttackRelease(note, 0.3);
-        });
-      }
-    });
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "handleStepClick", function (octave, note, step) {});
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "handleStepMouseDown", function (octave, note, step) {
-      // console.log('down', octave, note, step)
-      var sequence = Object.assign({}, _this.state.sequence);
-      var id = Date.now();
-      var duration = 1;
-      var temporary = true;
-      var newStep = {
-        octave: octave,
-        note: note,
-        step: step,
-        duration: duration,
-        temporary: temporary
-      };
-      sequence[id] = newStep;
-
-      _this.setState({
-        mouseDown: true,
-        mouseRow: {
-          octave: octave,
-          note: note,
-          startStep: step
-        },
-        sequence: sequence
-      });
-    });
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "handleStepMouseMove", function (octave, note, step) {
-      var _this$state6 = _this.state,
-          mouseDown = _this$state6.mouseDown,
-          mouseRow = _this$state6.mouseRow;
-
-      if (mouseDown && mouseRow.octave === octave && mouseRow.note === note) {
-        // console.log('move', octave, note, step)
-        var sequence = Object.assign({}, _this.state.sequence);
-        Object.keys(sequence).forEach(function (id, i) {
-          if (sequence[id].temporary) {
-            var startStep = mouseRow.startStep;
-            var startDuration = sequence[id].duration;
-
-            if (step != startStep) {
-              var nextDuration;
-
-              if (step > startStep) {
-                // console.log(
-                //   'move right',
-                //   step,
-                //   startStep,
-                //   startDuration,
-                //   step - startStep + 1
-                // )
-                nextDuration = step - startStep + 1;
-              } else if (step < startStep) {
-                // console.log(
-                //   'move left',
-                //   step,
-                //   startStep,
-                //   startDuration,
-                //   startStep - step + 1
-                // )
-                nextDuration = startStep - step + 1;
-                sequence[id].step = step;
-              }
-
-              sequence[id].duration = nextDuration;
-
-              _this.setState({
-                sequence: sequence
-              });
-            }
-          }
-        });
-      }
-    });
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "handleStepMouseUp", function (octave, note, step) {
-      // console.log('up', octave, note, step)
-      var sequence = Object.assign({}, _this.state.sequence);
-      Object.keys(sequence).forEach(function (id, i) {
-        // console.log(sequence[id], sequence[id].temporary)
-        if (sequence[id].temporary) {
-          sequence[id].temporary = false;
-        }
-      });
-
-      _this.setState({
-        mouseDown: false,
-        mouseRow: null,
-        sequence: sequence
-      });
-    });
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "handleSequenceStepClick", function (id) {
-      var sequence = Object.assign({}, _this.state.sequence);
-      delete sequence[id];
-
-      _this.setState({
-        sequence: sequence
-      });
-    });
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "generatePartCode", function () {
-      var sequence = _this.state.sequence;
-      var stepCounter = 0;
-      var samplerPartCode = [];
-      Object.keys(sequence).forEach(function (id, i) {
-        var _sequence$id2 = sequence[id],
-            octave = _sequence$id2.octave,
-            note = _sequence$id2.note,
-            step = _sequence$id2.step,
-            duration = _sequence$id2.duration,
-            temporary = _sequence$id2.temporary;
-        var samplerPartNoteCode = [];
-        samplerPartNoteCode.push('  {'); // prettier-ignore
-
-        samplerPartNoteCode.push("    time: '".concat(_this.transformToTransportTime(step), "',"));
-        samplerPartNoteCode.push("    noteName: '".concat(note).concat(octave, "',")); // prettier-ignore
-
-        samplerPartNoteCode.push("    duration: '".concat(_this.transformToDuration(duration), "',"));
-        samplerPartNoteCode.push('    velocity: 1');
-        samplerPartNoteCode.push('  }');
-        samplerPartCode.push(samplerPartNoteCode.join('\r\n'));
-        stepCounter++;
-      });
-
-      if (stepCounter > 0) {
-        return samplerPartCode.join(',\r\n');
-      } else {
-        return '  // Здесь пока нет секвенции';
-      }
-    });
-
-    MOD_MelodySequencer_defineProperty(MOD_MelodySequencer_assertThisInitialized(_this), "generateCodeExample", function () {
-      var loopDuration = _this.state.loopDuration; // prettier-ignore
-
-      return "// \u041F\u043E\u0434\u043A\u043B\u044E\u0447\u0430\u0435\u043C \u0431\u0438\u0431\u043B\u0438\u043E\u0442\u0435\u043A\u0443 Tone.js\nimport * as Tone from 'tone'\n\n// \u0421\u043E\u0437\u0434\u0430\u0451\u043C \u0441\u0438\u043D\u0442\u0435\u0437\u0430\u0442\u043E\u0440 \u0438 \u043F\u043E\u0434\u043A\u043B\u044E\u0447\u0430\u0435\u043C \u043A \u043A\u043E\u043B\u043E\u043D\u043A\u0430\u043C\nconst synth = new Tone.Synth().toDestination()\n\n// \u041E\u043F\u0438\u0441\u044B\u0432\u0430\u0435\u043C \u0441\u0435\u043A\u0432\u0435\u043D\u0438\u0446\u0438\u044E \u0432 \u0444\u043E\u0440\u043C\u0430\u0442\u0435 \u043C\u0430\u0441\u0441\u0438\u0432\u0430 \u0438\u0437 \u043E\u0431\u044A\u0435\u043A\u0442\u043E\u0432,\n// \u0432 \u043A\u0430\u0436\u0434\u043E\u043C \u0438\u0445 \u043A\u043E\u0442\u043E\u0440\u044B\u0445 \u043C\u044B \u043C\u043E\u0436\u0435\u043C \u0443\u043A\u0430\u0437\u0430\u0442\u044C \u043D\u043E\u0442\u0443, \u0434\u043B\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u044C,\n// \u0432\u0440\u0435\u043C\u044F, \u043A\u043E\u0433\u0434\u0430 \u0432\u043E\u0441\u043F\u043E\u0438\u0437\u0432\u043E\u0434\u0438\u0442\u044C \u043D\u043E\u0442\u0443, \u0438 \u0433\u0440\u043E\u043C\u043A\u043E\u0441\u0442\u044C\nconst sequence = [\n".concat(_this.generatePartCode(), "\n]\n\n// \u0421\u043E\u0437\u0434\u0430\u0451\u043C \u043F\u0430\u0440\u0442\u0438\u044E, \u0434\u043E\u0431\u0430\u0432\u043B\u044F\u0435\u043C \u0432 \u043D\u0435\u0451 \u0441\u0435\u043A\u0432\u0435\u043D\u0446\u0438\u044E\n// \u0438 \u0432\u043A\u043B\u044E\u0447\u0430\u0435\u043C \u043F\u0440\u043E\u0438\u0433\u0440\u044B\u0432\u0430\u043D\u0438\u0435\nconst part = new Tone.Part((time, note) => {\n  synth.triggerAttackRelease(\n    note.noteName,\n    note.duration,\n    time,\n    note.velocity\n  )\n}, sequence).start(0)\n\n// \u0423\u043A\u0430\u0437\u044B\u0432\u0430\u0435\u043C \u0434\u043B\u0438\u0442\u0435\u043B\u044C\u043D\u043E\u0441\u0442\u044C \u043F\u0430\u0440\u0442\u0438\u0438\npart.loopEnd = '").concat(loopDuration, "m'\n\n// \u0412\u043A\u043B\u044E\u0447\u0430\u0435\u043C \u0437\u0430\u0446\u0438\u043A\u043B\u0438\u0432\u0430\u043D\u0438\u0435\npart.loop = true\n\n// \u0412\u043A\u043B\u044E\u0447\u0430\u0435\u043C \u0437\u0432\u0443\u043A \u0432 \u0431\u0440\u0430\u0443\u0437\u0435\u0440\u0435\nsampler.context.resume()\n\n// \u0412\u043A\u043B\u044E\u0447\u0430\u0435\u043C \u043E\u0442\u0441\u0447\u0451\u0442 \u0432\u0440\u0435\u043C\u0435\u043D\u0438 \u0432 Tone.js\nTone.Transport.start()\n");
-    });
-
-    _this.state = {
-      created: false,
-      playing: false,
-      mouseDown: false,
-      mouseRow: {},
-      ticksPlayed: -1,
-      loopDuration: 2,
-      stepDuration: 16,
-      sequence: {},
-      stepWidth: 0
-    };
-    return _this;
-  }
-
-  MOD_MelodySequencer_createClass(MOD_MelodySequencer, [{
-    key: "componentDidMount",
-    value: function componentDidMount() {
-      var singleStep = document.querySelector('.MOD_MelodySequencer .A_NoteSequencerStep');
-      this.setState({
-        stepWidth: singleStep.getBoundingClientRect().width
-      });
-    }
-  }, {
-    key: "render",
-    value: function render() {
-      var _this$state7 = this.state,
-          created = _this$state7.created,
-          playing = _this$state7.playing,
-          ticksPlayed = _this$state7.ticksPlayed,
-          loopDuration = _this$state7.loopDuration,
-          stepDuration = _this$state7.stepDuration,
-          sequence = _this$state7.sequence,
-          stepWidth = _this$state7.stepWidth;
-      {
-        created ? this.updatePart() : '';
-      }
-      return /*#__PURE__*/react.createElement("div", {
-        className: "MOD_MelodySequencer"
-      }, /*#__PURE__*/react.createElement(M_InstrumentHeaderWithButton, {
-        text: "Melody Sequencer",
-        isOn: playing,
-        handleClick: this.handlePlayClick
-      }), /*#__PURE__*/react.createElement(O_NoteSequencer, {
-        octaves: 8,
-        loopDuration: loopDuration,
-        stepDuration: stepDuration,
-        ticksPlayed: ticksPlayed,
-        sequence: sequence,
-        stepWidth: stepWidth,
-        handleNoteClick: this.handleNoteClick,
-        handleStepClick: this.handleStepClick,
-        handleStepMouseDown: this.handleStepMouseDown,
-        handleStepMouseMove: this.handleStepMouseMove,
-        handleStepMouseUp: this.handleStepMouseUp,
-        handleSequenceStepClick: this.handleSequenceStepClick
-      }), /*#__PURE__*/react.createElement(A_InstrumentConnectionArrow, null), /*#__PURE__*/react.createElement(M_InstrumentHeader_M_InstrumentHeaderWithButton, {
-        text: "Tone Synth"
-      }), /*#__PURE__*/react.createElement(M_CodeExample, {
-        code: this.generateCodeExample()
-      }));
-    }
-  }]);
-
-  return MOD_MelodySequencer;
-}(react.Component);
-
-
-;// CONCATENATED MODULE: ./src/lesson-1.jsx
-
-
-
-
-
-
+ // import MOD_OscillatorFrequency from './javascript/modules/MOD_OscillatorFrequency.jsx'
 
 
 document.addEventListener('DOMContentLoaded', function () {
-  // const container1 = document.getElementById('interactiveModule_1')
-  // const root1 = createRoot(container1)
-  // root1.render(<MOD_OscillatorFrequency />)
-  var container2 = document.getElementById('interactiveModule_2');
-  var root2 = (0,client/* createRoot */.s)(container2);
-  root2.render( /*#__PURE__*/react.createElement(MOD_ToneSynthTriggerNote, null));
-  var container3 = document.getElementById('interactiveModule_3');
-  var root3 = (0,client/* createRoot */.s)(container3);
-  root3.render( /*#__PURE__*/react.createElement(MOD_PianoKeyboardWithSynth, null)); // 4 container
-
-  var container5 = document.getElementById('interactiveModule_5');
-  var root5 = (0,client/* createRoot */.s)(container5);
-  root5.render( /*#__PURE__*/react.createElement(MOD_SampleSequencer, null));
-  var container6 = document.getElementById('interactiveModule_6');
-  var root6 = (0,client/* createRoot */.s)(container6);
-  root6.render( /*#__PURE__*/react.createElement(MOD_MelodySequencer, null));
+  var container = document.getElementById('interactiveModule_1');
+  var root = (0,client/* createRoot */.s)(container);
+  root.render( /*#__PURE__*/react.createElement(MOD_OscillatorFrequency, null));
 });
 })();
 
